@@ -20,3 +20,10 @@ dist/
 !.vscode/extensions.json
 .DS_Store
 Thumbs.db
+
+# Claude Code tooling config and internal project spec — not for public repo
+.claude/
+AGENTS.md
+
+# Internal scaffold notes — not relevant to public consumers of this repo
+docs/backend-scaffold-notes.md
