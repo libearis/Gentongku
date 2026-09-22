@@ -1,0 +1,29 @@
+<section class="home">
+  <header class="home__header">
+    <h1>Gentongku Marketplace</h1>
+    <p>Perlengkapan gerabah &amp; rumah tangga dari perajin lokal.</p>
+    <input
+      class="home__search"
+      type="search"
+      placeholder="Cari produk atau kategori…"
+      [value]="search()"
+      (input)="search.set($any($event.target).value)"
+    />
+  </header>
+
+  <div class="home__grid">
+    @for (product of filtered(); track product.id) {
+      <a class="product-card card" [routerLink]="['/storefront/product', product.id]">
+        <div class="product-card__image">{{ product.imageEmoji }}</div>
+        @if (product.popular) {
+          <span class="badge product-card__badge">🔥 Populer</span>
+        }
+        <h3>{{ product.name }}</h3>
+        <p class="product-card__category">{{ product.category }}</p>
+        <p class="product-card__price">{{ formatPrice(product.price) }}</p>
+      </a>
+    } @empty {
+      <p class="home__empty">No products match your search.</p>
+    }
+  </div>
+</section>

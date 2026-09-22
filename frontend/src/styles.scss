@@ -1,0 +1,134 @@
+/* Gentongku global styles & design tokens (AGENTS.md section 11). */
+
+:root {
+  /* Brand */
+  --color-terracotta: #c1502e;
+  --color-terracotta-dark: #9c3f24;
+
+  /* Type */
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-ui: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+
+  /* Warm/light register — buyer-facing storefront (default) */
+  --bg: #fbf6f0;
+  --surface: #ffffff;
+  --surface-muted: #f2e9de;
+  --text: #2c2420;
+  --text-muted: #6f6459;
+  --border: #e6d9c8;
+  --accent: var(--color-terracotta);
+  --accent-contrast: #ffffff;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-soft: 0 2px 12px rgba(44, 36, 32, 0.08);
+}
+
+/* Dark/technical register — Admin, Benchmark, Scheduler (AGENTS.md 11) */
+.theme-dark {
+  --bg: #16181d;
+  --surface: #1f2229;
+  --surface-muted: #262a32;
+  --text: #e8e6e1;
+  --text-muted: #9aa0ab;
+  --border: #333844;
+  --accent: var(--color-terracotta);
+  --accent-contrast: #ffffff;
+  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0 0 0.5em;
+}
+
+code,
+.mono,
+.metric {
+  font-family: var(--font-mono);
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: var(--font-ui);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.15em 0.6em;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge--phase2 {
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.6em 1.2em;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.btn--primary:hover {
+  background: var(--color-terracotta-dark);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

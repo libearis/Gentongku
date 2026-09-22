@@ -1,0 +1,34 @@
+<Solution>
+  <Folder Name="/Host/">
+    <Project Path="Host/Gentongku.Api.csproj" />
+  </Folder>
+  <Folder Name="/Modules/" />
+  <Folder Name="/Modules/Benchmark/">
+    <Project Path="Modules/Benchmark/Benchmark.Application/Benchmark.Application.csproj" />
+    <Project Path="Modules/Benchmark/Benchmark.Infrastructure/Benchmark.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Catalog/">
+    <Project Path="Modules/Catalog/Catalog.Application/Catalog.Application.csproj" />
+    <Project Path="Modules/Catalog/Catalog.Domain/Catalog.Domain.csproj" />
+    <Project Path="Modules/Catalog/Catalog.Infrastructure/Catalog.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Identity/">
+    <Project Path="Modules/Identity/Identity.Application/Identity.Application.csproj" />
+    <Project Path="Modules/Identity/Identity.Domain/Identity.Domain.csproj" />
+    <Project Path="Modules/Identity/Identity.Infrastructure/Identity.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Ordering/">
+    <Project Path="Modules/Ordering/Ordering.Application/Ordering.Application.csproj" />
+    <Project Path="Modules/Ordering/Ordering.Domain/Ordering.Domain.csproj" />
+    <Project Path="Modules/Ordering/Ordering.Infrastructure/Ordering.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Scheduler/">
+    <Project Path="Modules/Scheduler/Scheduler.Application/Scheduler.Application.csproj" />
+    <Project Path="Modules/Scheduler/Scheduler.Infrastructure/Scheduler.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Ticketing/">
+    <Project Path="Modules/Ticketing/Ticketing.Application/Ticketing.Application.csproj" />
+    <Project Path="Modules/Ticketing/Ticketing.Infrastructure/Ticketing.Infrastructure.csproj" />
+  </Folder>
+  <Project Path="BuildingBlocks/BuildingBlocks.csproj" />
+</Solution>

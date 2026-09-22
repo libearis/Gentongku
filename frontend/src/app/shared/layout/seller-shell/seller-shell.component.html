@@ -1,0 +1,19 @@
+<div class="shell">
+  <header class="shell__nav">
+    <span class="shell__brand"><app-wordmark [size]="22" /></span>
+
+    <nav class="shell__tabs">
+      <a routerLink="/seller/my-store" routerLinkActive="shell__tab--active" class="shell__tab">My Store</a>
+      <a routerLink="/storefront/home" class="shell__tab">Shopping</a>
+    </nav>
+
+    <div class="shell__actions">
+      <span class="shell__store">{{ auth.user()?.storeName ?? 'My Store' }}</span>
+      <button type="button" class="shell__logout" (click)="logout()">Log out</button>
+    </div>
+  </header>
+
+  <main class="shell__content">
+    <router-outlet />
+  </main>
+</div>

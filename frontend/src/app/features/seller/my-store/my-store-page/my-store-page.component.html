@@ -1,0 +1,53 @@
+<section class="my-store">
+  <div class="card store-profile">
+    <div class="store-profile__avatar">🏺</div>
+    <div>
+      <h1>{{ storeName() }}</h1>
+      <p class="store-profile__meta">Jl. Perajin Gerabah No. 12, Kasongan, Yogyakarta</p>
+      <div class="store-profile__tags">
+        <span class="badge">Peralatan Rumah</span>
+        <span class="badge">Dapur</span>
+        <span class="badge">Dekorasi</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="my-store__grid">
+    <div class="card panel">
+      <div class="panel__header">
+        <h2>Incoming orders</h2>
+      </div>
+      @for (order of incomingOrders(); track order.id) {
+        <div class="order-row">
+          <span class="mono">{{ order.id }}</span>
+          <span>{{ order.buyer }}</span>
+          <span class="mono">Rp {{ order.total | number }}</span>
+          <span class="badge">{{ order.status }}</span>
+        </div>
+      } @empty {
+        <p class="panel__empty">No incoming orders yet.</p>
+      }
+    </div>
+
+    <div class="card panel">
+      <div class="panel__header">
+        <h2>Products</h2>
+        <button type="button" class="btn btn--primary" (click)="toggleProductForm()">
+          {{ showProductForm() ? 'Close' : '+ Add product' }}
+        </button>
+      </div>
+
+      @if (showProductForm()) {
+        <form class="product-form">
+          <label class="field"><span>Name</span><input type="text" placeholder="Gentong Tanah Liat" /></label>
+          <label class="field"><span>Category</span><input type="text" placeholder="Peralatan Rumah" /></label>
+          <label class="field"><span>Price (IDR)</span><input type="number" placeholder="185000" /></label>
+          <p class="panel__note">Product CRUD form placeholder — wired to the Catalog API once it's available server-side.</p>
+          <button type="button" class="btn btn--ghost">Save (disabled — placeholder)</button>
+        </form>
+      } @else {
+        <p class="panel__empty">Product CRUD placeholder — the Catalog module isn't wired up server-side yet.</p>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+<section class="benchmark">
+  <h1>Write Benchmark</h1>
+  <p class="benchmark__note">
+    Inserts the same batch into two structurally identical tables — <code class="mono">orders_indexed</code>
+    (many indexes) and <code class="mono">orders_plain</code> (zero indexes) — in the same Postgres database.
+    This is the entire CQRS-adjacent teaching point (AGENTS.md section 6.2); no real CQRS split is built.
+    Real inserts pending backend wiring — results below are simulated.
+  </p>
+
+  <div class="card benchmark__controls">
+    <label class="field">
+      <span>Batch size (rows)</span>
+      <input type="number" [value]="batchSize()" (input)="setBatchSize($any($event.target).value)" min="1" />
+    </label>
+    <button type="button" class="btn btn--primary" [disabled]="running()" (click)="run()">
+      {{ running() ? 'Inserting…' : 'Run write benchmark' }}
+    </button>
+  </div>
+
+  @if (results(); as results) {
+    <table class="card benchmark__table">
+      <thead>
+        <tr>
+          <th>Table</th>
+          <th>Rows / sec</th>
+          <th>Avg ms / insert</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of results; track row.table) {
+          <tr>
+            <td class="mono">{{ row.table }}</td>
+            <td class="mono">{{ row.rowsPerSec | number }}</td>
+            <td class="mono">{{ row.avgMs }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

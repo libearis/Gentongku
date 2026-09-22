@@ -1,0 +1,28 @@
+<section class="job-monitor">
+  <h1>Job Monitor</h1>
+  <p class="job-monitor__note">
+    Polled from the frontend — no SignalR (AGENTS.md sections 2/7). The same jobs must be visible in the
+    Hangfire dashboard at <code class="mono">/hangfire</code>; this list is not a parallel source of truth.
+  </p>
+
+  <table class="card job-monitor__table">
+    <thead>
+      <tr>
+        <th>Job ID</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Started</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (job of jobs(); track job.jobId) {
+        <tr>
+          <td class="mono">{{ job.jobId }}</td>
+          <td>{{ job.type }}</td>
+          <td><span class="badge">{{ job.status }}</span></td>
+          <td class="mono">{{ job.startedAt }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>

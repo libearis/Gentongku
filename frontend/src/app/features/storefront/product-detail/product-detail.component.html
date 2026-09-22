@@ -1,0 +1,54 @@
+@if (product(); as product) {
+  <section class="detail">
+    <a routerLink="/storefront/home" class="detail__back">&larr; Back to catalog</a>
+
+    <div class="detail__layout">
+      <div class="detail__image card">{{ product.imageEmoji }}</div>
+
+      <div class="detail__info">
+        <h1>{{ product.name }}</h1>
+        <p class="detail__seller">Sold by {{ product.sellerName }}</p>
+        <p class="detail__price">{{ formatPrice(product.price + (selectedVariant()?.priceDelta ?? 0)) }}</p>
+        <p class="detail__description">{{ product.description }}</p>
+
+        <div class="detail__variants">
+          <span class="detail__label">Variant</span>
+          <div class="detail__variant-options">
+            @for (variant of product.variants; track variant.id) {
+              <button
+                type="button"
+                class="variant-chip"
+                [class.variant-chip--active]="selectedVariant()?.id === variant.id"
+                (click)="selectVariant(variant.id)"
+              >
+                {{ variant.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        @if (canPurchase()) {
+          <div class="detail__qty">
+            <span class="detail__label">Quantity</span>
+            <div class="qty-stepper">
+              <button type="button" (click)="changeQty(-1)">-</button>
+              <span class="mono">{{ qty() }}</span>
+              <button type="button" (click)="changeQty(1)">+</button>
+            </div>
+          </div>
+
+          <div class="detail__actions">
+            <button type="button" class="btn btn--primary" (click)="addToCart()">Add to cart</button>
+            @if (added()) {
+              <button type="button" class="btn btn--ghost" (click)="goToCart()">Added — view cart</button>
+            }
+          </div>
+        } @else {
+          <p class="detail__readonly">You're browsing in read-only admin mode — cart &amp; checkout are disabled for Admin accounts.</p>
+        }
+      </div>
+    </div>
+  </section>
+} @else {
+  <p class="detail__loading">Loading product…</p>
+}

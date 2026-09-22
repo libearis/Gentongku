@@ -1,0 +1,72 @@
+<section class="benchmark">
+  <h1>Read Benchmark</h1>
+  <p class="benchmark__note">
+    Benchmark engine UI — real query execution pending backend wiring. Table/column pickers and strategy
+    toggles below are functional in the UI and modeled to reflect real index behavior once wired up
+    (AGENTS.md section 6.1).
+  </p>
+
+  <div class="benchmark__pickers card">
+    <div class="picker">
+      <span class="picker__label">Table</span>
+      <div class="picker__options">
+        @for (table of tables; track table) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="selectedTable() === table"
+            (click)="selectTable(table)"
+          >
+            {{ table }} <span class="mono chip__size">{{ tableSizes[table] }}</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="picker">
+      <span class="picker__label">Column</span>
+      <div class="picker__options">
+        @for (col of columns(); track col.name) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="selectedColumn() === col.name"
+            (click)="selectedColumn.set(col.name)"
+          >
+            {{ col.name }}
+            @if (!col.indexed) {
+              <span class="badge">no index</span>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="benchmark__strategies">
+    @for (strategy of strategies(); track strategy.key) {
+      <div class="card strategy" [class.strategy--off]="!strategy.enabled">
+        <div class="strategy__header">
+          <span>{{ strategy.label }}</span>
+          <label class="switch">
+            <input type="checkbox" [checked]="strategy.enabled" (change)="toggleStrategy(strategy.key)" />
+            <span class="switch__track"></span>
+          </label>
+        </div>
+        <div class="strategy__value mono">
+          @if (!strategy.enabled) {
+            not run
+          } @else if (strategy.ms === null) {
+            —
+          } @else {
+            {{ strategy.ms }} ms
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <button type="button" class="btn btn--primary" [disabled]="running()" (click)="runBenchmark()">
+    {{ running() ? 'Running…' : 'Run benchmark' }}
+  </button>
+</section>

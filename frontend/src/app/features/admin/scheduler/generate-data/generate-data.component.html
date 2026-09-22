@@ -1,0 +1,46 @@
+<section class="generate">
+  <h1>Generate Dummy Data</h1>
+  <p class="generate__note">
+    Enqueues a Hangfire job immediately; the job's lifecycle is tracked separately in Job Monitor and the
+    Hangfire dashboard at <code class="mono">/hangfire</code> (AGENTS.md section 7). Job submission pending backend wiring.
+  </p>
+
+  <div class="card generate__form">
+    <div class="mode-toggle">
+      <button type="button" class="chip" [class.chip--active]="mode() === 'rows'" (click)="setMode('rows')">By row count</button>
+      <button type="button" class="chip" [class.chip--active]="mode() === 'size'" (click)="setMode('size')">By storage size</button>
+    </div>
+
+    @if (mode() === 'rows') {
+      <label class="field">
+        <span>Target row count</span>
+        <input type="number" [value]="rowCount()" (input)="setRowCount($any($event.target).value)" min="1" />
+      </label>
+    } @else {
+      <label class="field">
+        <span>Target storage size (MB)</span>
+        <input type="number" [value]="targetMb()" (input)="setTargetMb($any($event.target).value)" min="1" />
+      </label>
+      <p class="generate__estimate mono">≈ {{ estimatedRowsFromSize() | number }} rows (estimate, ~420 bytes/row)</p>
+    }
+
+    <button type="button" class="btn btn--primary" [disabled]="submitting()" (click)="enqueue()">
+      {{ submitting() ? 'Enqueuing…' : 'Generate data' }}
+    </button>
+
+    @if (justEnqueued()) {
+      <p class="generate__success">Job enqueued — check Job Monitor for progress.</p>
+    }
+  </div>
+
+  <div class="scheduler-cards">
+    <div class="card scheduler-card scheduler-card--disabled">
+      <h3>Report Maker</h3>
+      <span class="badge">Coming soon</span>
+    </div>
+    <div class="card scheduler-card scheduler-card--disabled">
+      <h3>Test-Data Cleanup</h3>
+      <span class="badge">Coming soon</span>
+    </div>
+  </div>
+</section>

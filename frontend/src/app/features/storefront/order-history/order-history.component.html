@@ -1,0 +1,39 @@
+<section class="orders">
+  <h1>Order history</h1>
+
+  @if (orders().length === 0) {
+    <p>No orders yet.</p>
+  }
+
+  @for (order of orders(); track order.id) {
+    <div class="order card">
+      <div class="order__header">
+        <strong class="mono">{{ order.id }}</strong>
+        <span class="order__date">{{ order.placedAt | date: 'medium' }}</span>
+      </div>
+
+      <div class="order__stages">
+        @for (stage of stages; track stage; let i = $index) {
+          <div class="stage" [class.stage--done]="i <= stageIndex(order.status)">
+            <span class="stage__dot"></span>
+            <span>{{ stage }}</span>
+          </div>
+        }
+      </div>
+
+      <ul class="order__items">
+        @for (item of order.items; track item.productName + item.variantLabel) {
+          <li>{{ item.productName }} ({{ item.variantLabel }}) &times; {{ item.qty }}</li>
+        }
+      </ul>
+
+      <div class="order__total">
+        Total: <span class="mono">{{ formatPrice(order.total) }}</span>
+      </div>
+
+      @if (order.status === 'Completed') {
+        <button type="button" class="btn btn--ghost">Leave a review</button>
+      }
+    </div>
+  }
+</section>

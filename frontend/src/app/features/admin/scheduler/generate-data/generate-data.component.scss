@@ -1,0 +1,80 @@
+.generate__note {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  max-width: 680px;
+}
+
+.generate__form {
+  padding: 20px;
+  margin: 16px 0;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.chip--active {
+  border-color: var(--color-terracotta);
+  background: var(--color-terracotta);
+  color: #fff;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.field input {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.generate__estimate {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.generate__success {
+  color: #4caf6f;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.scheduler-cards {
+  display: flex;
+  gap: 12px;
+}
+
+.scheduler-card {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 160px;
+}
+
+.scheduler-card--disabled {
+  opacity: 0.6;
+}

@@ -1,0 +1,36 @@
+<section class="users">
+  <div class="users__header">
+    <h1>Users</h1>
+    <button type="button" class="btn btn--primary" (click)="toggleCreateAdmin()">
+      {{ showCreateAdmin() ? 'Close' : '+ Create Admin account' }}
+    </button>
+  </div>
+  <p class="users__note">Admin accounts are only ever created from here — no self-registration (AGENTS.md section 4).</p>
+
+  @if (showCreateAdmin()) {
+    <form class="card create-admin-form">
+      <label class="field"><span>Email</span><input type="email" placeholder="new-admin@gentongku.dev" /></label>
+      <label class="field"><span>Temporary password</span><input type="password" /></label>
+      <button type="button" class="btn btn--ghost">Create (disabled — placeholder, Identity API pending)</button>
+    </form>
+  }
+
+  <table class="card users__table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users(); track user.email) {
+        <tr>
+          <td>{{ user.email }}</td>
+          <td><span class="badge">{{ user.role }}</span></td>
+          <td class="mono">{{ user.createdAt }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>

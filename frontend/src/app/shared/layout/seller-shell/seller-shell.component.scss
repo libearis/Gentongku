@@ -1,0 +1,70 @@
+.shell {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.shell__nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 14px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.shell__brand {
+  color: var(--color-terracotta);
+}
+
+.shell__tabs {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  background: var(--surface-muted);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  width: fit-content;
+}
+
+.shell__tab {
+  padding: 6px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.shell__tab--active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-soft);
+}
+
+.shell__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.shell__store {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.shell__logout {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.shell__content {
+  padding: 28px;
+  max-width: 1080px;
+  margin: 0 auto;
+}

@@ -1,0 +1,50 @@
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Host/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      ASPNETCORE_URLS: "http://+:5000"
+      # NOTE: Postgres runs as a LOCAL instance on the host machine, not in this
+      # compose file (see docs/local-postgres.md). From inside a Windows/Mac
+      # Docker Desktop container, "localhost" means the container itself, so
+      # this is overridden here to reach the host's Postgres via the special
+      # Docker Desktop DNS name. On Linux Docker you may need
+      # --add-host=host.docker.internal:host-gateway or the host's real LAN IP.
+      ConnectionStrings__Default: "Host=host.docker.internal;Port=5432;Database=gentongku;Username=postgres;Password=${POSTGRES_PASSWORD}"
+      Redis__ConnectionString: "redis:6379"
+      Seq__ServerUrl: "http://seq:5341"
+      Jwt__Issuer: "gentongku"
+      Jwt__Secret: "gentongku-dev-only-secret-please-change-0123456789"
+      IssueIntake__Host: "host.docker.internal"
+      IssueIntake__Port: "50051"
+      Hangfire__DashboardPath: "/hangfire"
+    depends_on:
+      - redis
+      - seq
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  seq:
+    image: datalust/seq:latest
+    environment:
+      ACCEPT_EULA: "Y"
+    ports:
+      - "5341:80"
+      - "5342:5341"

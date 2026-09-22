@@ -1,0 +1,25 @@
+.job-monitor__note {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  max-width: 680px;
+}
+
+.job-monitor__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.job-monitor__table th,
+.job-monitor__table td {
+  text-align: left;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.job-monitor__table th {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}

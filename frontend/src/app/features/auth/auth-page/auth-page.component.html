@@ -1,0 +1,136 @@
+<div class="auth-page">
+  <svg class="auth-page__bg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <rect width="800" height="600" fill="#f0e4d3" />
+    <g transform="translate(400 560) scale(0.72) translate(-400 -560)">
+      <ellipse cx="400" cy="560" rx="360" ry="30" fill="#e2d0b6" />
+      <rect x="230" y="120" width="340" height="30" rx="14" fill="#caa06a" />
+      <path
+        d="M270 150c-60 40-95 130-95 230 0 130 100 230 225 230s225-100 225-230c0-100-35-190-95-230Z"
+        fill="#d9ad74"
+      />
+      <path
+        d="M270 150c-60 40-95 130-95 230 0 130 100 230 225 230s225-100 225-230c0-100-35-190-95-230Z"
+        fill="#00000008"
+      />
+      <path d="M195 330c30 22 110 35 205 35s175-13 205-35" stroke="#b9895a" stroke-width="6" fill="none" opacity="0.6" />
+      <path d="M205 250c28 16 100 26 195 26s167-10 195-26" stroke="#b9895a" stroke-width="6" fill="none" opacity="0.5" />
+    </g>
+  </svg>
+
+  <div class="auth-card card">
+    <div class="auth-card__brand">
+      <app-wordmark [size]="30" />
+    </div>
+    <p class="auth-card__tagline">Modular monolith storefront, live demo of the Benchmark &amp; Scheduler engines.</p>
+
+    <div class="auth-card__tabs" role="tablist">
+      <button
+        type="button"
+        class="auth-card__tab"
+        role="tab"
+        [class.auth-card__tab--active]="tab() === 'login'"
+        (click)="setTab('login')"
+      >
+        Log in
+      </button>
+      <button
+        type="button"
+        class="auth-card__tab"
+        role="tab"
+        [class.auth-card__tab--active]="tab() === 'register'"
+        (click)="setTab('register')"
+      >
+        Register
+      </button>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="auth-card__error">{{ errorMessage() }}</p>
+    }
+
+    @if (tab() === 'login') {
+      <form [formGroup]="loginForm" (ngSubmit)="submitLogin()" class="auth-form">
+        <label class="field">
+          <span>Email or username</span>
+          <input type="text" formControlName="identifier" autocomplete="username" />
+          @if (loginForm.controls.identifier.touched && loginForm.controls.identifier.invalid) {
+            <small class="field__error">Enter your email or username.</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <input type="password" formControlName="password" autocomplete="current-password" />
+          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+            <small class="field__error">Password must be at least 6 characters.</small>
+          }
+        </label>
+
+        <button type="submit" class="btn btn--primary auth-form__submit" [disabled]="submitting()">
+          {{ submitting() ? 'Signing in…' : 'Log in' }}
+        </button>
+      </form>
+    } @else {
+      <form [formGroup]="registerForm" (ngSubmit)="submitRegister()" class="auth-form">
+        <div class="role-picker" role="radiogroup" aria-label="Register as">
+          <button
+            type="button"
+            class="role-picker__option"
+            [class.role-picker__option--active]="registerRole() === 'Buyer'"
+            (click)="setRegisterRole('Buyer')"
+          >
+            Buyer
+          </button>
+          <button
+            type="button"
+            class="role-picker__option"
+            [class.role-picker__option--active]="registerRole() === 'Seller'"
+            (click)="setRegisterRole('Seller')"
+          >
+            Seller
+          </button>
+        </div>
+
+        <label class="field">
+          <span>Username</span>
+          <input type="text" formControlName="username" autocomplete="username" />
+          @if (registerForm.controls.username.touched && registerForm.controls.username.invalid) {
+            <small class="field__error">Username must be at least 3 characters (letters, numbers, "." or "_" only).</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input type="email" formControlName="email" autocomplete="email" />
+          @if (registerForm.controls.email.touched && registerForm.controls.email.invalid) {
+            <small class="field__error">Enter a valid email address.</small>
+          }
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <input type="password" formControlName="password" autocomplete="new-password" />
+          @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+            <small class="field__error">Password must be at least 6 characters.</small>
+          }
+        </label>
+
+        @if (registerRole() === 'Seller') {
+          <label class="field">
+            <span>Store name</span>
+            <input type="text" formControlName="storeName" autocomplete="organization" />
+            @if (registerForm.controls.storeName.touched && registerForm.controls.storeName.invalid) {
+              <small class="field__error">Store name is required for sellers.</small>
+            }
+          </label>
+        }
+
+        <p class="auth-form__note">Admin accounts aren't self-service — they're created from Admin &rsaquo; Users.</p>
+
+        <button type="submit" class="btn btn--primary auth-form__submit" [disabled]="submitting()">
+          {{ submitting() ? 'Creating account…' : 'Create account' }}
+        </button>
+      </form>
+    }
+  </div>
+</div>

@@ -1,0 +1,145 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  /* Matches the bg SVG's own <rect> fill, so "meet" letterboxing (when the
+     viewport's aspect ratio differs from the SVG's 800x600 viewBox) blends
+     in seamlessly instead of showing a mismatched edge. */
+  background: #f0e4d3;
+}
+
+.auth-page__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  padding: 32px 28px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+.auth-card__brand {
+  color: var(--color-terracotta);
+  margin-bottom: 6px;
+}
+
+.auth-card__tagline {
+  margin: 0 0 20px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.auth-card__tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface-muted);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: 20px;
+}
+
+.auth-card__tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px 0;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.auth-card__tab--active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-soft);
+}
+
+.auth-card__error {
+  background: #fbeae5;
+  color: #9c3f24;
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  margin: 0 0 16px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.field input {
+  font: inherit;
+  font-family: var(--font-ui);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.field__error {
+  color: var(--color-terracotta-dark);
+  font-weight: 500;
+}
+
+.role-picker {
+  display: flex;
+  gap: 8px;
+}
+
+.role-picker__option {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.role-picker__option--active {
+  border-color: var(--color-terracotta);
+  color: var(--color-terracotta-dark);
+  background: #fbeee6;
+}
+
+.auth-form__note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.auth-form__submit {
+  margin-top: 6px;
+}

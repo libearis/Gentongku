@@ -1,0 +1,36 @@
+<div class="shell">
+  <header class="shell__nav">
+    <a routerLink="/storefront/home" class="shell__brand"><app-wordmark [size]="22" /></a>
+
+    <nav class="shell__links">
+      <a routerLink="/storefront/home" routerLinkActive="shell__link--active" class="shell__link">Home</a>
+      @if (canShop()) {
+        <a routerLink="/storefront/orders" routerLinkActive="shell__link--active" class="shell__link">Orders</a>
+      }
+      @if (auth.role() === 'Seller') {
+        <a routerLink="/seller/my-store" class="shell__link">My Store</a>
+      }
+      @if (auth.role() === 'Admin') {
+        <a routerLink="/admin/users" class="shell__link">Admin Menu</a>
+      }
+    </nav>
+
+    <div class="shell__actions">
+      @if (canShop()) {
+        <a routerLink="/storefront/cart" class="shell__cart">
+          <app-gentong-icon [size]="20" />
+          @if (cart.itemCount() > 0) {
+            <span class="shell__cart-count">{{ cart.itemCount() }}</span>
+          }
+        </a>
+      } @else {
+        <span class="badge">Read-only</span>
+      }
+      <button type="button" class="shell__logout" (click)="logout()">Log out</button>
+    </div>
+  </header>
+
+  <main class="shell__content">
+    <router-outlet />
+  </main>
+</div>

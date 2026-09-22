@@ -1,0 +1,35 @@
+<section class="cart">
+  <h1>Your cart</h1>
+
+  @if (cart.lines().length === 0) {
+    <p class="cart__empty">Your gentong is empty. <a routerLink="/storefront/home">Browse products</a>.</p>
+  } @else {
+    <div class="cart__lines">
+      @for (line of cart.lines(); track line.product.id + line.variant.id) {
+        <div class="cart-line card">
+          <div class="cart-line__image">{{ line.product.imageEmoji }}</div>
+          <div class="cart-line__info">
+            <strong>{{ line.product.name }}</strong>
+            <span class="cart-line__variant">{{ line.variant.label }}</span>
+          </div>
+          <div class="cart-line__qty">
+            <button type="button" (click)="updateQty(line, line.qty - 1)">-</button>
+            <span class="mono">{{ line.qty }}</span>
+            <button type="button" (click)="updateQty(line, line.qty + 1)">+</button>
+          </div>
+          <div class="cart-line__price mono">
+            {{ formatPrice((line.product.price + line.variant.priceDelta) * line.qty) }}
+          </div>
+          <button type="button" class="cart-line__remove" (click)="remove(line)">Remove</button>
+        </div>
+      }
+    </div>
+
+    <div class="cart__summary card">
+      <span>Subtotal</span>
+      <strong class="mono">{{ formatPrice(cart.subtotal()) }}</strong>
+    </div>
+
+    <a routerLink="/storefront/checkout" class="btn btn--primary cart__checkout">Proceed to checkout</a>
+  }
+</section>

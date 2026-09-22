@@ -1,0 +1,22 @@
+# .NET
+backend/**/bin/
+backend/**/obj/
+*.user
+
+# Local secrets — see .env.example for the template
+.env
+
+# Angular / Node (frontend/.gitignore also covers frontend-local specifics)
+node_modules/
+dist/
+.angular/
+
+# Editors / OS
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db

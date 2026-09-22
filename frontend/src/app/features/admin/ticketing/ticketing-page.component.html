@@ -1,0 +1,34 @@
+<section class="ticketing">
+  <h1>Ticketing</h1>
+  <p class="ticketing__note">
+    Files support tickets against the external Issue Intake app over gRPC — fire-and-forget, no callback
+    on status change (AGENTS.md section 8). Full form wiring is pending backend gRPC client.
+  </p>
+
+  <div class="card ticketing__form">
+    <h2>New ticket</h2>
+    <label class="field"><span>Subject</span><input type="text" placeholder="Short summary" /></label>
+    <label class="field"><span>Description</span><textarea rows="3" placeholder="Details for the external support app"></textarea></label>
+    <button type="button" class="btn btn--ghost">Submit (disabled — placeholder, gRPC client pending)</button>
+  </div>
+
+  <h2>Ticket history</h2>
+  <table class="card ticketing__table">
+    <thead>
+      <tr>
+        <th>Issue ID</th>
+        <th>Subject</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (ticket of tickets(); track ticket.issueId) {
+        <tr>
+          <td class="mono">{{ ticket.issueId }}</td>
+          <td>{{ ticket.subject }}</td>
+          <td><span class="badge">{{ ticket.status }}</span></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>

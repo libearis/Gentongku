@@ -1,0 +1,81 @@
+.shell {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.shell__nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 14px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.shell__brand {
+  color: var(--color-terracotta);
+  text-decoration: none;
+}
+
+.shell__links {
+  display: flex;
+  gap: 18px;
+  flex: 1;
+}
+
+.shell__link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.shell__link--active {
+  color: var(--color-terracotta-dark);
+}
+
+.shell__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.shell__cart {
+  position: relative;
+  color: var(--text);
+  display: inline-flex;
+}
+
+.shell__cart-count {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: var(--color-terracotta);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 999px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.shell__logout {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.shell__content {
+  padding: 28px;
+  max-width: 1080px;
+  margin: 0 auto;
+}

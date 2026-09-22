@@ -1,0 +1,18 @@
+<section class="health">
+  <h1>Health Check</h1>
+  <p class="health__note">
+    Surfaces standard ASP.NET Core health checks (DB + Redis + Hangfire storage) inside the Benchmark
+    section, not duplicated under Admin Menu (AGENTS.md section 6.4/9). Live polling against
+    <code class="mono">/health</code> pending backend wiring.
+  </p>
+
+  <div class="health__grid">
+    @for (item of items(); track item.name) {
+      <div class="card health-item">
+        <span class="health-item__dot" [class.health-item__dot--ok]="item.status === 'Healthy'"></span>
+        <span>{{ item.name }}</span>
+        <span class="badge">{{ item.status }}</span>
+      </div>
+    }
+  </div>
+</section>

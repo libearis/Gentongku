@@ -1,0 +1,32 @@
+<div class="admin-shell">
+  <aside class="admin-shell__sidebar">
+    <div class="admin-shell__brand"><app-wordmark [size]="20" /></div>
+
+    <nav class="admin-shell__nav">
+      <a routerLink="/admin/users" routerLinkActive="admin-shell__link--active" class="admin-shell__link">Users</a>
+      <a routerLink="/admin/ticketing" routerLinkActive="admin-shell__link--active" class="admin-shell__link">Ticketing</a>
+
+      <div class="admin-shell__group-label">Benchmark</div>
+      <a routerLink="/admin/benchmark/read" routerLinkActive="admin-shell__link--active" class="admin-shell__link admin-shell__link--nested">Read</a>
+      <a routerLink="/admin/benchmark/write" routerLinkActive="admin-shell__link--active" class="admin-shell__link admin-shell__link--nested">Write</a>
+      <span class="admin-shell__link admin-shell__link--nested admin-shell__link--disabled">
+        Search (Elasticsearch)
+        <span class="badge badge--phase2">Fase 2</span>
+      </span>
+      <a routerLink="/admin/benchmark/health" routerLinkActive="admin-shell__link--active" class="admin-shell__link admin-shell__link--nested">Health</a>
+
+      <div class="admin-shell__group-label">Scheduler</div>
+      <a routerLink="/admin/scheduler/generate-data" routerLinkActive="admin-shell__link--active" class="admin-shell__link admin-shell__link--nested">Generate Data</a>
+      <a routerLink="/admin/scheduler/job-monitor" routerLinkActive="admin-shell__link--active" class="admin-shell__link admin-shell__link--nested">Job Monitor</a>
+    </nav>
+
+    <div class="admin-shell__footer">
+      <a routerLink="/storefront/home" class="admin-shell__link">View storefront (read-only)</a>
+      <button type="button" class="admin-shell__logout" (click)="logout()">Log out</button>
+    </div>
+  </aside>
+
+  <main class="admin-shell__content">
+    <router-outlet />
+  </main>
+</div>

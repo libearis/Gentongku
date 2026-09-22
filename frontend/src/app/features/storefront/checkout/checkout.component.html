@@ -1,0 +1,41 @@
+<section class="checkout">
+  <h1>Checkout</h1>
+
+  <div class="checkout__layout">
+    <div class="card checkout__payment">
+      <h2>Payment method</h2>
+      <p class="checkout__note">Mocked payment methods only — no real gateway is wired up (AGENTS.md section 13).</p>
+
+      <label class="payment-option" [class.payment-option--active]="paymentMethod() === 'transfer'">
+        <input type="radio" name="payment" [checked]="paymentMethod() === 'transfer'" (change)="selectPayment('transfer')" />
+        <span>Bank Transfer</span>
+      </label>
+      <label class="payment-option" [class.payment-option--active]="paymentMethod() === 'qris'">
+        <input type="radio" name="payment" [checked]="paymentMethod() === 'qris'" (change)="selectPayment('qris')" />
+        <span>QRIS</span>
+      </label>
+      <label class="payment-option" [class.payment-option--active]="paymentMethod() === 'cod'">
+        <input type="radio" name="payment" [checked]="paymentMethod() === 'cod'" (change)="selectPayment('cod')" />
+        <span>Cash on Delivery</span>
+      </label>
+    </div>
+
+    <div class="card checkout__summary">
+      <h2>Order summary</h2>
+      @for (line of cart.lines(); track line.product.id + line.variant.id) {
+        <div class="summary-line">
+          <span>{{ line.product.name }} ({{ line.variant.label }}) &times; {{ line.qty }}</span>
+          <span class="mono">{{ formatPrice((line.product.price + line.variant.priceDelta) * line.qty) }}</span>
+        </div>
+      }
+      <div class="summary-line summary-line--total">
+        <span>Total</span>
+        <span class="mono">{{ formatPrice(cart.subtotal()) }}</span>
+      </div>
+
+      <button type="button" class="btn btn--primary checkout__submit" [disabled]="placing() || cart.lines().length === 0" (click)="placeOrder()">
+        {{ placing() ? 'Placing order…' : 'Place order' }}
+      </button>
+    </div>
+  </div>
+</section>
