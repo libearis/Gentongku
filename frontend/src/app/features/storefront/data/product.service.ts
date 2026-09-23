@@ -1,103 +1,64 @@
-import { Injectable } from '@angular/core';
-import { Observable, delay, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable, catchError, map, of } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { Product } from './product.model';
 
+/** Shape returned by the Catalog module's `GET /api/catalog/products[/:id]` (ProductDto). */
+interface ApiProductDto {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  stockQuantity: number;
+  categoryId: string;
+  categoryName: string;
+  sellerId: string;
+  sellerName: string;
+  isActive: boolean;
+}
+
+const CATEGORY_EMOJI: Record<string, string> = {
+  'Peralatan Rumah': '🏺',
+  Dapur: '🍯',
+  Taman: '🪴',
+  Dekorasi: '🐖',
+};
+
 /**
- * Placeholder product catalog.
- *
- * The Catalog module isn't fully wired up on the backend yet, so this
- * service returns mocked data shaped exactly like the future HTTP
- * response. Swapping to the real API later is a one-file change: replace
- * the bodies below with `HttpClient` calls against
- * `${environment.apiUrl}/catalog/products` — the public method signatures
- * (`list()` / `get(id)`) and their `Observable<...>` return types stay the
- * same, so nothing calling this service needs to change.
+ * Reads real Catalog data from the backend (AGENTS.md section 3's Catalog
+ * module). The backend doesn't model product variants yet, so each product
+ * is given a single "Standar" variant so the existing cart/checkout flow
+ * (which is keyed on product + variant) keeps working unchanged.
  */
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  private readonly products: Product[] = [
-    {
-      id: 'p1',
-      name: 'Gentong Tanah Liat Klasik',
-      category: 'Peralatan Rumah',
-      price: 185000,
-      description: 'Gentong tanah liat tradisional untuk menyimpan air minum agar tetap sejuk secara alami.',
-      imageEmoji: '🏺',
-      popular: true,
-      sellerName: 'Kriya Tanah Mataram',
-      variants: [
-        { id: 'v1', label: '10 Liter', priceDelta: 0 },
-        { id: 'v2', label: '20 Liter', priceDelta: 65000 },
-      ],
-    },
-    {
-      id: 'p2',
-      name: 'Toples Keramik Bermotif',
-      category: 'Dapur',
-      price: 92000,
-      description: 'Toples keramik dengan motif batik, cocok untuk menyimpan camilan kering.',
-      imageEmoji: '🍯',
-      popular: true,
-      sellerName: 'Rumah Keramik Kasongan',
-      variants: [
-        { id: 'v1', label: 'Kecil', priceDelta: 0 },
-        { id: 'v2', label: 'Besar', priceDelta: 40000 },
-      ],
-    },
-    {
-      id: 'p3',
-      name: 'Kendi Air Minum',
-      category: 'Peralatan Rumah',
-      price: 65000,
-      description: 'Kendi tanah liat klasik, menjaga air tetap dingin tanpa kulkas.',
-      imageEmoji: '🫖',
-      popular: false,
-      sellerName: 'Kriya Tanah Mataram',
-      variants: [{ id: 'v1', label: 'Standar', priceDelta: 0 }],
-    },
-    {
-      id: 'p4',
-      name: 'Pot Tanaman Gerabah',
-      category: 'Taman',
-      price: 45000,
-      description: 'Pot gerabah berpori, baik untuk drainase akar tanaman hias.',
-      imageEmoji: '🪴',
-      popular: false,
-      sellerName: 'System Seller',
-      variants: [
-        { id: 'v1', label: 'Diameter 15cm', priceDelta: 0 },
-        { id: 'v2', label: 'Diameter 25cm', priceDelta: 30000 },
-      ],
-    },
-    {
-      id: 'p5',
-      name: 'Cobek & Ulekan Batu',
-      category: 'Dapur',
-      price: 78000,
-      description: 'Cobek batu andesit asli, permukaan kasar alami untuk hasil bumbu yang halus.',
-      imageEmoji: '🥣',
-      popular: true,
-      sellerName: 'System Seller',
-      variants: [{ id: 'v1', label: 'Standar', priceDelta: 0 }],
-    },
-    {
-      id: 'p6',
-      name: 'Celengan Gerabah',
-      category: 'Dekorasi',
-      price: 35000,
-      description: 'Celengan gerabah bentuk klasik, dicat dengan pewarna alami.',
-      imageEmoji: '🐖',
-      popular: false,
-      sellerName: 'Rumah Keramik Kasongan',
-      variants: [{ id: 'v1', label: 'Standar', priceDelta: 0 }],
-    },
-  ];
+  private readonly http = inject(HttpClient);
 
   list(): Observable<Product[]> {
-    return of(this.products).pipe(delay(150));
+    return this.http
+      .get<ApiProductDto[]>(`${environment.apiUrl}/catalog/products`, { params: { take: 50 } })
+      .pipe(map((products) => products.map(toProduct)));
   }
 
   get(id: string): Observable<Product | undefined> {
-    return of(this.products.find((p) => p.id === id)).pipe(delay(150));
+    return this.http.get<ApiProductDto>(`${environment.apiUrl}/catalog/products/${id}`).pipe(
+      map(toProduct),
+      catchError(() => of(undefined)),
+    );
   }
+}
+
+function toProduct(dto: ApiProductDto): Product {
+  return {
+    id: dto.id,
+    name: dto.name,
+    category: dto.categoryName,
+    price: dto.price,
+    description: dto.description ?? '',
+    imageEmoji: CATEGORY_EMOJI[dto.categoryName] ?? '📦',
+    popular: false,
+    sellerName: dto.sellerName,
+    variants: [{ id: 'standar', label: 'Standar', priceDelta: 0 }],
+  };
 }

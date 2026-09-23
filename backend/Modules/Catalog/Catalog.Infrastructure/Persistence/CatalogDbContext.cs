@@ -1,3 +1,4 @@
+using BuildingBlocks.Entities;
 using Catalog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,5 +50,34 @@ public class CatalogDbContext : DbContext
             b.HasIndex(s => s.UserId).IsUnique();
             b.Property(s => s.StoreName).HasMaxLength(200).IsRequired();
         });
+
+        AuditColumns.Configure(modelBuilder);
+    }
+}
+
+/// <summary>
+/// Pins the audit columns (created_at, created_by, updated_at, updated_by,
+/// deleted_at, deleted_by) immediately after the primary key on every table
+/// backed by a <see cref="BaseEntity"/>, regardless of the entity's own
+/// property declaration order. Duplicated per-module (rather than shared via
+/// BuildingBlocks) so BuildingBlocks — referenced by Domain projects too —
+/// never takes an EF Core dependency.
+/// </summary>
+internal static class AuditColumns
+{
+    public static void Configure(ModelBuilder modelBuilder)
+    {
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            if (!typeof(BaseEntity).IsAssignableFrom(entityType.ClrType)) continue;
+
+            entityType.FindProperty(nameof(BaseEntity.Id))!.SetColumnOrder(0);
+            entityType.FindProperty(nameof(BaseEntity.CreatedAt))!.SetColumnOrder(1);
+            entityType.FindProperty(nameof(BaseEntity.CreatedBy))!.SetColumnOrder(2);
+            entityType.FindProperty(nameof(BaseEntity.UpdatedAt))!.SetColumnOrder(3);
+            entityType.FindProperty(nameof(BaseEntity.UpdatedBy))!.SetColumnOrder(4);
+            entityType.FindProperty(nameof(BaseEntity.DeletedAt))!.SetColumnOrder(5);
+            entityType.FindProperty(nameof(BaseEntity.DeletedBy))!.SetColumnOrder(6);
+        }
     }
 }

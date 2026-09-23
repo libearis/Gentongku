@@ -1,5 +1,6 @@
 using Catalog.Application.Abstractions;
 using Catalog.Application.DTOs;
+using Catalog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Persistence;
@@ -16,11 +17,29 @@ public sealed class CatalogQueries : ICatalogQueries
             .ToListAsync(ct);
 
     public async Task<IReadOnlyList<ProductDto>> ListProductsAsync(int take = 20, CancellationToken ct = default) =>
-        await _db.Products.AsNoTracking()
-            .OrderByDescending(p => p.CreatedAt)
-            .Take(take)
-            .Select(p => new ProductDto(p.Id, p.Name, p.Description, p.Price, p.StockQuantity, p.CategoryId, p.SellerId, p.IsActive))
+        await ProductDtoQuery(_db.Products.AsNoTracking().OrderByDescending(p => p.CreatedAt).Take(take))
             .ToListAsync(ct);
+
+    public async Task<ProductDto?> GetProductAsync(Guid id, CancellationToken ct = default) =>
+        await ProductDtoQuery(_db.Products.AsNoTracking().Where(p => p.Id == id))
+            .FirstOrDefaultAsync(ct);
+
+    private IQueryable<ProductDto> ProductDtoQuery(IQueryable<Product> products) =>
+        from p in products
+        join c in _db.Categories.AsNoTracking() on p.CategoryId equals c.Id
+        join s in _db.SellerProfiles.AsNoTracking() on p.SellerId equals s.UserId into sellerJoin
+        from s in sellerJoin.DefaultIfEmpty()
+        select new ProductDto(
+            p.Id,
+            p.Name,
+            p.Description,
+            p.Price,
+            p.StockQuantity,
+            p.CategoryId,
+            c.Name,
+            p.SellerId,
+            s.StoreName ?? "Unknown Seller",
+            p.IsActive);
 }
 
 public sealed class SellerProfileService : ISellerProfileService

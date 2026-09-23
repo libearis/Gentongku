@@ -24,6 +24,14 @@ public class SchedulerDbContext : DbContext
             b.Property(j => j.JobType).HasMaxLength(100).IsRequired();
             b.Property(j => j.Status).HasMaxLength(20).IsRequired();
             b.HasIndex(j => j.CreatedAt);
+
+            b.Property(j => j.Id).HasColumnOrder(0);
+            b.Property(j => j.CreatedAt).HasColumnOrder(1);
+            b.Property(j => j.CreatedBy).HasColumnOrder(2);
+            b.Property(j => j.UpdatedAt).HasColumnOrder(3);
+            b.Property(j => j.UpdatedBy).HasColumnOrder(4);
+            b.Property(j => j.DeletedAt).HasColumnOrder(5);
+            b.Property(j => j.DeletedBy).HasColumnOrder(6);
         });
     }
 }

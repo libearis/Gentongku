@@ -15,7 +15,8 @@ public static class BenchmarkModule
 
         services.AddDbContext<BenchmarkDbContext>(options =>
             options.UseNpgsql(connectionString, npgsql =>
-                npgsql.MigrationsHistoryTable("__ef_migrations_history", BenchmarkDbContext.Schema)));
+                npgsql.MigrationsHistoryTable("__ef_migrations_history", BenchmarkDbContext.Schema))
+            .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IBenchmarkService, BenchmarkService>();
 

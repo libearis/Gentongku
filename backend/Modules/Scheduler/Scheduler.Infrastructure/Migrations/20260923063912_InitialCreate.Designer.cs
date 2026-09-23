@@ -2,28 +2,31 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Ordering.Infrastructure.Persistence;
+using Scheduler.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Ordering.Infrastructure.Migrations
+namespace Scheduler.Infrastructure.Migrations
 {
-    [DbContext(typeof(OrderingDbContext))]
-    partial class OrderingDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(SchedulerDbContext))]
+    [Migration("20260923063912_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("ordering")
+                .HasDefaultSchema("scheduler")
                 .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Ordering.Domain.Entities.Order", b =>
+            modelBuilder.Entity("Scheduler.Infrastructure.Entities.JobRun", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,9 +34,9 @@ namespace Ordering.Infrastructure.Migrations
                         .HasColumnName("id")
                         .HasColumnOrder(0);
 
-                    b.Property<Guid>("BuyerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("buyer_id");
+                    b.Property<DateTimeOffset?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("completed_at");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -55,19 +58,27 @@ namespace Ordering.Infrastructure.Migrations
                         .HasColumnName("deleted_by")
                         .HasColumnOrder(6);
 
-                    b.Property<string>("Notes")
+                    b.Property<string>("HangfireJobId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("hangfire_job_id");
+
+                    b.Property<string>("JobType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("job_type");
+
+                    b.Property<string>("ResultMessage")
                         .HasColumnType("text")
-                        .HasColumnName("notes");
+                        .HasColumnName("result_message");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
                         .HasColumnName("status");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("numeric(18,2)")
-                        .HasColumnName("total_amount");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -80,18 +91,12 @@ namespace Ordering.Infrastructure.Migrations
                         .HasColumnOrder(4);
 
                     b.HasKey("Id")
-                        .HasName("pk_orders");
-
-                    b.HasIndex("BuyerId")
-                        .HasDatabaseName("ix_orders_buyer_id");
+                        .HasName("pk_job_runs");
 
                     b.HasIndex("CreatedAt")
-                        .HasDatabaseName("ix_orders_created_at");
+                        .HasDatabaseName("ix_job_runs_created_at");
 
-                    b.HasIndex("Status")
-                        .HasDatabaseName("ix_orders_status");
-
-                    b.ToTable("orders", "ordering");
+                    b.ToTable("job_runs", "scheduler");
                 });
 #pragma warning restore 612, 618
         }

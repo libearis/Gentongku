@@ -178,7 +178,7 @@ try
         var identityDb = services.GetRequiredService<IdentityDbContext>();
         await IdentitySeeder.SeedAsync(identityDb);
 
-        await services.GetRequiredService<CatalogDbContext>().Database.MigrateAsync();
+        await CatalogSeeder.SeedAsync(services.GetRequiredService<CatalogDbContext>());
         await services.GetRequiredService<OrderingDbContext>().Database.MigrateAsync();
         await services.GetRequiredService<BenchmarkDbContext>().Database.MigrateAsync();
         await services.GetRequiredService<SchedulerDbContext>().Database.MigrateAsync();

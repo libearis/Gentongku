@@ -15,7 +15,8 @@ public static class CatalogModule
 
         services.AddDbContext<CatalogDbContext>(options =>
             options.UseNpgsql(connectionString, npgsql =>
-                npgsql.MigrationsHistoryTable("__ef_migrations_history", CatalogDbContext.Schema)));
+                npgsql.MigrationsHistoryTable("__ef_migrations_history", CatalogDbContext.Schema))
+            .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ICatalogQueries, CatalogQueries>();
         services.AddScoped<ISellerProfileService, SellerProfileService>();

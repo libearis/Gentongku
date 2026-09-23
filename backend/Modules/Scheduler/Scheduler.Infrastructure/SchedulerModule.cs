@@ -15,7 +15,8 @@ public static class SchedulerModule
 
         services.AddDbContext<SchedulerDbContext>(options =>
             options.UseNpgsql(connectionString, npgsql =>
-                npgsql.MigrationsHistoryTable("__ef_migrations_history", SchedulerDbContext.Schema)));
+                npgsql.MigrationsHistoryTable("__ef_migrations_history", SchedulerDbContext.Schema))
+            .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ISchedulerService, SchedulerService>();
         services.AddScoped<GenerateDummyDataJob>();

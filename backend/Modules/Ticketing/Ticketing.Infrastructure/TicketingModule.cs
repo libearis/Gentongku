@@ -16,7 +16,8 @@ public static class TicketingModule
 
         services.AddDbContext<TicketingDbContext>(options =>
             options.UseNpgsql(connectionString, npgsql =>
-                npgsql.MigrationsHistoryTable("__ef_migrations_history", TicketingDbContext.Schema)));
+                npgsql.MigrationsHistoryTable("__ef_migrations_history", TicketingDbContext.Schema))
+            .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ITicketQueries, TicketQueries>();
         services.AddScoped<IIssueIntakeClient, GrpcIssueIntakeClient>();

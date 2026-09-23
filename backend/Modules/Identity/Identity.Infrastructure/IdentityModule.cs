@@ -20,7 +20,8 @@ public static class IdentityModule
 
         services.AddDbContext<IdentityDbContext>(options =>
             options.UseNpgsql(connectionString, npgsql =>
-                npgsql.MigrationsHistoryTable("__ef_migrations_history", IdentityDbContext.Schema)));
+                npgsql.MigrationsHistoryTable("__ef_migrations_history", IdentityDbContext.Schema))
+            .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserQueries, UserQueries>();

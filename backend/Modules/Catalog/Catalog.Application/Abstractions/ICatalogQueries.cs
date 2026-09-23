@@ -11,6 +11,7 @@ public interface ICatalogQueries
 {
     Task<IReadOnlyList<CategoryDto>> ListCategoriesAsync(CancellationToken ct = default);
     Task<IReadOnlyList<ProductDto>> ListProductsAsync(int take = 20, CancellationToken ct = default);
+    Task<ProductDto?> GetProductAsync(Guid id, CancellationToken ct = default);
 }
 
 /// <summary>

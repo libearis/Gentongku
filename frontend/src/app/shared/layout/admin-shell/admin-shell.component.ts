@@ -1,12 +1,58 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthStore } from '../../../core/auth/auth-store.service';
 import { WordmarkComponent } from '../../ui/wordmark/wordmark.component';
+
+interface AdminNavItem {
+  label: string;
+  route?: string;
+  disabled?: boolean;
+  badge?: string;
+}
+
+interface AdminNavSection {
+  key: string;
+  label: string;
+  items: AdminNavItem[];
+}
+
+const NAV_SECTIONS: AdminNavSection[] = [
+  {
+    key: 'admin-menu',
+    label: 'Admin Menu',
+    items: [
+      { label: 'Users', route: '/admin/users' },
+      { label: 'Ticketing', route: '/admin/ticketing' },
+    ],
+  },
+  {
+    key: 'benchmark',
+    label: 'Benchmark',
+    items: [
+      { label: 'Read', route: '/admin/benchmark/read' },
+      { label: 'Write', route: '/admin/benchmark/write' },
+      { label: 'Search (Elasticsearch)', disabled: true, badge: 'Fase 2' },
+      { label: 'Health', route: '/admin/benchmark/health' },
+    ],
+  },
+  {
+    key: 'scheduler',
+    label: 'Scheduler',
+    items: [
+      { label: 'Generate Data', route: '/admin/scheduler/generate-data' },
+      { label: 'Job Monitor', route: '/admin/scheduler/job-monitor' },
+    ],
+  },
+];
 
 /**
  * AdminShell: dark/technical register sidebar + router-outlet, no business
  * logic (AGENTS.md section 11). Applies `.theme-dark` to switch the design
  * tokens for Admin/Benchmark/Scheduler.
+ *
+ * Sidebar is organized into the three collapsible sections named in the
+ * mockups (Admin Menu, Benchmark, Scheduler), with a search box that filters
+ * nav items across all sections and auto-expands sections with a match.
  */
 @Component({
   selector: 'app-admin-shell',
@@ -18,6 +64,35 @@ import { WordmarkComponent } from '../../ui/wordmark/wordmark.component';
 })
 export class AdminShellComponent {
   readonly auth = inject(AuthStore);
+
+  readonly search = signal('');
+  private readonly collapsed = signal(new Set<string>());
+
+  readonly sections = computed(() => {
+    const term = this.search().trim().toLowerCase();
+    const collapsed = this.collapsed();
+
+    return NAV_SECTIONS.map((section) => {
+      const items = term
+        ? section.items.filter((item) => item.label.toLowerCase().includes(term))
+        : section.items;
+
+      return {
+        ...section,
+        items,
+        expanded: term.length > 0 ? items.length > 0 : !collapsed.has(section.key),
+      };
+    }).filter((section) => term.length === 0 || section.items.length > 0);
+  });
+
+  toggleSection(key: string): void {
+    this.collapsed.update((current) => {
+      const next = new Set(current);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
 
   logout(): void {
     this.auth.logout();

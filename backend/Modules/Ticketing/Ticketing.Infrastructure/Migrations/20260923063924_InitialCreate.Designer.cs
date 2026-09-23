@@ -2,38 +2,37 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Ordering.Infrastructure.Persistence;
+using Ticketing.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Ordering.Infrastructure.Migrations
+namespace Ticketing.Infrastructure.Migrations
 {
-    [DbContext(typeof(OrderingDbContext))]
-    partial class OrderingDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TicketingDbContext))]
+    [Migration("20260923063924_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("ordering")
+                .HasDefaultSchema("ticketing")
                 .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Ordering.Domain.Entities.Order", b =>
+            modelBuilder.Entity("Ticketing.Infrastructure.Entities.IssueReport", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id")
                         .HasColumnOrder(0);
-
-                    b.Property<Guid>("BuyerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("buyer_id");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -55,19 +54,29 @@ namespace Ordering.Infrastructure.Migrations
                         .HasColumnName("deleted_by")
                         .HasColumnOrder(6);
 
-                    b.Property<string>("Notes")
-                        .HasColumnType("text")
-                        .HasColumnName("notes");
+                    b.Property<string>("IssueId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("issue_id");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("ReportedBy")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("reported_by");
+
+                    b.Property<string>("Severity")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
-                        .HasColumnName("status");
+                        .HasColumnName("severity");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("numeric(18,2)")
-                        .HasColumnName("total_amount");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("title");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -80,18 +89,12 @@ namespace Ordering.Infrastructure.Migrations
                         .HasColumnOrder(4);
 
                     b.HasKey("Id")
-                        .HasName("pk_orders");
-
-                    b.HasIndex("BuyerId")
-                        .HasDatabaseName("ix_orders_buyer_id");
+                        .HasName("pk_issue_reports");
 
                     b.HasIndex("CreatedAt")
-                        .HasDatabaseName("ix_orders_created_at");
+                        .HasDatabaseName("ix_issue_reports_created_at");
 
-                    b.HasIndex("Status")
-                        .HasDatabaseName("ix_orders_status");
-
-                    b.ToTable("orders", "ordering");
+                    b.ToTable("issue_reports", "ticketing");
                 });
 #pragma warning restore 612, 618
         }

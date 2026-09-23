@@ -14,7 +14,8 @@ public static class OrderingModule
 
         services.AddDbContext<OrderingDbContext>(options =>
             options.UseNpgsql(connectionString, npgsql =>
-                npgsql.MigrationsHistoryTable("__ef_migrations_history", OrderingDbContext.Schema)));
+                npgsql.MigrationsHistoryTable("__ef_migrations_history", OrderingDbContext.Schema))
+            .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IOrderQueries, OrderQueries>();
 

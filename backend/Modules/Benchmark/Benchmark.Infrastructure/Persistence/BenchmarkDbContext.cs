@@ -41,5 +41,10 @@ public class BenchmarkDbContext : DbContext
             b.Property(o => o.Status).HasMaxLength(20);
             b.Property(o => o.TotalAmount).HasColumnType("numeric(18,2)");
         });
+
+        // orders_indexed/orders_plain deliberately skip the standard audit
+        // columns (created_by/updated_at/updated_by/deleted_at/deleted_by) —
+        // they're timing-sensitive write-benchmark rows, not domain entities
+        // (see the "no shared base entity on purpose" note above).
     }
 }

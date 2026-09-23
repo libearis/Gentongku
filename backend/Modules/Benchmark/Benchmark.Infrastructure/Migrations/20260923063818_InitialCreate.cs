@@ -19,15 +19,15 @@ namespace Benchmark.Infrastructure.Migrations
                 schema: "benchmark",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    buyer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    total_amount = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_orders_indexed", x => x.Id);
+                    table.PrimaryKey("pk_orders_indexed", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -35,34 +35,34 @@ namespace Benchmark.Infrastructure.Migrations
                 schema: "benchmark",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    buyer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    total_amount = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_orders_plain", x => x.Id);
+                    table.PrimaryKey("pk_orders_plain", x => x.id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_orders_indexed_BuyerId",
+                name: "ix_orders_indexed_buyer_id",
                 schema: "benchmark",
                 table: "orders_indexed",
-                column: "BuyerId");
+                column: "buyer_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_orders_indexed_CreatedAt",
+                name: "ix_orders_indexed_created_at",
                 schema: "benchmark",
                 table: "orders_indexed",
-                column: "CreatedAt");
+                column: "created_at");
 
             migrationBuilder.CreateIndex(
-                name: "IX_orders_indexed_Status",
+                name: "ix_orders_indexed_status",
                 schema: "benchmark",
                 table: "orders_indexed",
-                column: "Status");
+                column: "status");
         }
 
         /// <inheritdoc />
