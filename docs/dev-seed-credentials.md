@@ -1,6 +1,6 @@
 # Dev-only seed credentials
 
-The Identity module seeds exactly one Admin account on startup (see
+The Identity module seeds exactly one Admin account via `dotnet run --project Host -- migrate` (see
 `backend/Modules/Identity/Identity.Infrastructure/Persistence/IdentitySeeder.cs`),
 since Admin has no self-registration path (AGENTS.md section 4).
 

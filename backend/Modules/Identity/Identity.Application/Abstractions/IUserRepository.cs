@@ -12,13 +12,11 @@ public interface IUserRepository
     Task SaveChangesAsync(CancellationToken ct = default);
 }
 
-/// <summary>
-/// Public cross-module read contract (AGENTS.md section 3: "depends on that
-/// module's public IXQueries interface, injected via DI from the Host").
-/// Other modules (e.g. Catalog resolving a seller's display name) should
-/// depend on this instead of Identity.Domain/Infrastructure directly.
-/// </summary>
+// Public cross-module read contract — other modules (e.g. Catalog resolving a seller's display name) depend on this instead of Identity.Domain/Infrastructure directly.
 public interface IUserQueries
 {
     Task<Identity.Application.DTOs.UserDto?> GetByIdAsync(Guid id, CancellationToken ct = default);
+
+    // Used by the Scheduler module's dummy-data generator to attach realistic BuyerIds to generated Orders without referencing Identity.Domain.
+    Task<IReadOnlyList<Guid>> ListBuyerIdsAsync(int take, CancellationToken ct = default);
 }

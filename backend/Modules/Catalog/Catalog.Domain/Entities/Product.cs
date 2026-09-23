@@ -2,11 +2,7 @@ using BuildingBlocks.Entities;
 
 namespace Catalog.Domain.Entities;
 
-/// <summary>
-/// "Produk" read-benchmark table (~86k rows), AGENTS.md section 6.1.
-/// SellerId is a plain Guid reference to identity.users — no cross-schema FK
-/// (AGENTS.md section 3).
-/// </summary>
+// "Produk" read-benchmark table (~86k rows, AGENTS.md section 6.1); SellerId is a plain Guid to identity.users with no cross-schema FK (AGENTS.md section 3).
 public class Product : BaseEntity
 {
     public string Name { get; private set; } = default!;

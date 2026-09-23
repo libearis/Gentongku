@@ -8,10 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Infrastructure;
 
-/// <summary>
-/// Registration entry point for the Identity module, called from
-/// Host/ModuleRegistration/IdentityModuleRegistration.cs.
-/// </summary>
 public static class IdentityModule
 {
     public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)

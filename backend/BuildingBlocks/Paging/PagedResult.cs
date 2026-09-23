@@ -1,8 +1,5 @@
 namespace BuildingBlocks.Paging;
 
-/// <summary>
-/// Request parameters shared by any module's "list" queries.
-/// </summary>
 public sealed class PageRequest
 {
     public int Page { get; init; } = 1;
@@ -12,9 +9,6 @@ public sealed class PageRequest
     public int Take => Math.Max(PageSize, 1);
 }
 
-/// <summary>
-/// Generic paged response envelope used across module Application layers.
-/// </summary>
 public sealed class PagedResult<T>
 {
     public IReadOnlyList<T> Items { get; init; } = Array.Empty<T>();

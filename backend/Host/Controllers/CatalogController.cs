@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gentongku.Api.Controllers;
 
-/// <summary>Trivial passthrough endpoints proving the Catalog module is wired end-to-end.</summary>
 [ApiController]
 [Route("api/catalog")]
 public class CatalogController : ControllerBase

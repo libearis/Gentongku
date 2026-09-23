@@ -1,5 +1,6 @@
 using Identity.Application.Abstractions;
 using Identity.Domain.Entities;
+using Identity.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Persistence;
@@ -47,4 +48,12 @@ public sealed class UserQueries : IUserQueries
             ? null
             : new Identity.Application.DTOs.UserDto(user.Id, user.Username, user.Email, user.DisplayName, user.Role, user.IsActive, user.CreatedAt);
     }
+
+    public async Task<IReadOnlyList<Guid>> ListBuyerIdsAsync(int take, CancellationToken ct = default) =>
+        await _db.Users.AsNoTracking()
+            .Where(u => u.Role == UserRole.Buyer && u.IsActive)
+            .OrderBy(u => u.Id)
+            .Select(u => u.Id)
+            .Take(take)
+            .ToListAsync(ct);
 }

@@ -3,12 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Scheduler.Infrastructure.Persistence;
 
-/// <summary>
-/// Design-time-only factory so `dotnet ef migrations add` can build the model
-/// without booting the full Host (which eagerly opens real Postgres/Redis
-/// connections at startup). Never used at runtime — the Host wires up
-/// <see cref="SchedulerDbContext"/> itself via SchedulerModule.
-/// </summary>
+// Lets `dotnet ef migrations add` build the model without booting the full Host and its real Postgres/Redis connections.
 public sealed class SchedulerDbContextFactory : IDesignTimeDbContextFactory<SchedulerDbContext>
 {
     public SchedulerDbContext CreateDbContext(string[] args)

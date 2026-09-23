@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gentongku.Api.Controllers;
 
-/// <summary>
-/// Trivial passthrough endpoints proving the Benchmark module is wired
-/// end-to-end. Real strategy execution is TODO — see Benchmark.Infrastructure/Services/BenchmarkService.cs.
-/// </summary>
+// TODO: real strategy execution — see Benchmark.Infrastructure/Services/BenchmarkService.cs.
 [ApiController]
 [Route("api/benchmark")]
 public class BenchmarkController : ControllerBase

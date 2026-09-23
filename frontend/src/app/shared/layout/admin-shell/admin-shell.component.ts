@@ -1,5 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
 import { AuthStore } from '../../../core/auth/auth-store.service';
 import { WordmarkComponent } from '../../ui/wordmark/wordmark.component';
 
@@ -45,15 +47,6 @@ const NAV_SECTIONS: AdminNavSection[] = [
   },
 ];
 
-/**
- * AdminShell: dark/technical register sidebar + router-outlet, no business
- * logic (AGENTS.md section 11). Applies `.theme-dark` to switch the design
- * tokens for Admin/Benchmark/Scheduler.
- *
- * Sidebar is organized into the three collapsible sections named in the
- * mockups (Admin Menu, Benchmark, Scheduler), with a search box that filters
- * nav items across all sections and auto-expands sections with a match.
- */
 @Component({
   selector: 'app-admin-shell',
   standalone: true,
@@ -64,9 +57,20 @@ const NAV_SECTIONS: AdminNavSection[] = [
 })
 export class AdminShellComponent {
   readonly auth = inject(AuthStore);
+  private readonly router = inject(Router);
 
   readonly search = signal('');
-  private readonly collapsed = signal(new Set<string>());
+  private readonly collapsed = signal(new Set<string>(NAV_SECTIONS.map((s) => s.key)));
+
+  constructor() {
+    // Search is transient nav aid, not page state — clear it on every navigation, including back/forward.
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => this.search.set(''));
+  }
 
   readonly sections = computed(() => {
     const term = this.search().trim().toLowerCase();

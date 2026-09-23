@@ -1,11 +1,7 @@
 import { Routes } from '@angular/router';
 import { buyerFlowGuard } from '../../core/auth/auth.guard';
 
-/**
- * Shared by both the Buyer route tree (/storefront/**) and the Seller
- * "Shopping" tab, which links straight into these same routes — no
- * duplicate storefront implementation (AGENTS.md section 4/5).
- */
+// Shared by the Buyer route tree and the Seller "Shopping" tab — no duplicate storefront implementation (AGENTS.md section 4/5).
 export const STOREFRONT_ROUTES: Routes = [
   {
     path: 'home',
@@ -17,8 +13,7 @@ export const STOREFRONT_ROUTES: Routes = [
       import('./product-detail/product-detail.component').then((m) => m.ProductDetailComponent),
   },
   {
-    // Cart/checkout mutate state — Admin's storefront access is read-only, so these are
-    // additionally gated to Buyer/Seller only, even though the parent route already allows Admin through.
+    // Admin's storefront access is read-only, so cart/checkout are gated to Buyer/Seller despite the parent route allowing Admin.
     path: 'cart',
     canActivate: [buyerFlowGuard],
     loadComponent: () => import('./cart/cart.component').then((m) => m.CartComponent),

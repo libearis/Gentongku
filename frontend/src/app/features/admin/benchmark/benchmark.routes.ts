@@ -1,10 +1,6 @@
 import { Routes } from '@angular/router';
 
-/**
- * Search (Elasticsearch) is intentionally NOT routed here — it's phase 2
- * (AGENTS.md section 6.3). The sidebar shows a disabled nav entry with a
- * "Fase 2" badge instead of a clickable link (see AdminShellComponent).
- */
+// Search (Elasticsearch) isn't routed here — it's phase 2, shown as a disabled sidebar entry instead (AGENTS.md 6.3).
 export const BENCHMARK_ROUTES: Routes = [
   {
     path: 'read',

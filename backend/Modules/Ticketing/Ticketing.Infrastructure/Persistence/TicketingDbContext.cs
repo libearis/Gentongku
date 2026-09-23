@@ -3,7 +3,6 @@ using Ticketing.Infrastructure.Entities;
 
 namespace Ticketing.Infrastructure.Persistence;
 
-/// <summary>DbContext scoped to the `ticketing` Postgres schema.</summary>
 public class TicketingDbContext : DbContext
 {
     public const string Schema = "ticketing";

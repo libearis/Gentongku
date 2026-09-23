@@ -8,13 +8,12 @@ export interface AuthUser {
   storeName?: string;
 }
 
-/** POST /api/auth/login request body. `identifier` accepts an email or a username. */
+// `identifier` accepts either an email or a username.
 export interface LoginRequest {
   identifier: string;
   password: string;
 }
 
-/** POST /api/auth/register request body */
 export interface RegisterRequest {
   username: string;
   email: string;
@@ -23,7 +22,7 @@ export interface RegisterRequest {
   storeName?: string;
 }
 
-/** Shared response shape for both /auth/login and /auth/register */
+// Shared response shape for both /auth/login and /auth/register.
 export interface AuthResponse {
   token: string;
   role: Role;

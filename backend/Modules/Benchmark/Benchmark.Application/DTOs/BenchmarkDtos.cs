@@ -1,6 +1,5 @@
 namespace Benchmark.Application.DTOs;
 
-/// <summary>Which of the 4 read strategies (AGENTS.md section 6.1) to run.</summary>
 [Flags]
 public enum ReadStrategy
 {

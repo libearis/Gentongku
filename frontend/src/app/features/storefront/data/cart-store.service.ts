@@ -7,7 +7,6 @@ export interface CartLine {
   qty: number;
 }
 
-/** Signal-based cart store — the storefront's local equivalent of AuthStore. */
 @Injectable({ providedIn: 'root' })
 export class CartStore {
   private readonly _lines = signal<CartLine[]>([]);

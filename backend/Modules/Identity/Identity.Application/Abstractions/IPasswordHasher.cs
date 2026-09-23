@@ -1,9 +1,6 @@
 namespace Identity.Application.Abstractions;
 
-/// <summary>
-/// Password hashing abstraction so the concrete algorithm (BCrypt here) stays
-/// swappable from Infrastructure without touching Application/Domain.
-/// </summary>
+// Kept abstract so the concrete algorithm (BCrypt) stays swappable from Infrastructure without touching Application/Domain.
 public interface IPasswordHasher
 {
     string Hash(string plainPassword);

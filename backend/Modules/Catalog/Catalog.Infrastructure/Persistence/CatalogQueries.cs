@@ -58,12 +58,7 @@ public sealed class SellerProfileService : ISellerProfileService
     }
 }
 
-/// <summary>
-/// Adapts Catalog's own <see cref="ISellerProfileService"/> to the contract
-/// Identity's Application layer depends on
-/// (Identity.Application.Abstractions.ISellerProfileProvisioner), so Identity
-/// never references Catalog directly — only the Host wires the two together.
-/// </summary>
+// Adapts ISellerProfileService to Identity.Application.Abstractions.ISellerProfileProvisioner so Identity never references Catalog directly; only the Host wires the two together.
 public sealed class SellerProfileProvisionerAdapter : Identity.Application.Abstractions.ISellerProfileProvisioner
 {
     private readonly ISellerProfileService _inner;

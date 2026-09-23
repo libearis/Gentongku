@@ -74,13 +74,7 @@ export class ReadBenchmarkComponent {
     return this.columns().find((c) => c.name === this.selectedColumn())?.indexed ?? false;
   }
 
-  /**
-   * Placeholder client-side simulation only — the real implementation runs each
-   * strategy server-side and must actually skip execution when toggled off
-   * (AGENTS.md section 6.1), and must let "no index" degrade DB-index-only to
-   * live-query, and index+redis to redis-only. This UI models that degradation
-   * so the chart behavior is representative even before the API exists.
-   */
+  // Simulation only: models the real degradation rule where a non-indexed column drops index-only/index+redis to live-query/redis-only (AGENTS.md 6.1).
   runBenchmark(): void {
     this.running.set(true);
     const indexed = this.isColumnIndexed();

@@ -1,35 +1,56 @@
 <section class="generate">
   <h1>Generate Dummy Data</h1>
   <p class="generate__note">
-    Enqueues a Hangfire job immediately; the job's lifecycle is tracked separately in Job Monitor and the
-    Hangfire dashboard at <code class="mono">/hangfire</code> (AGENTS.md section 7). Job submission pending backend wiring.
+    Isi katalog atau daftar pesanan dengan data contoh, supaya fitur-fitur lain (seperti pencarian, Read Benchmark,
+    dan halaman katalog) punya sesuatu untuk ditampilkan. Data dibuat di latar belakang — kamu bisa lanjut memakai
+    aplikasi sambil menunggu, dan hasilnya bisa dipantau di <a routerLink="/admin/scheduler/job-monitor">Job Monitor</a>.
   </p>
 
   <div class="card generate__form">
+    <div class="field">
+      <span class="field__label">Data apa yang mau dibuat?</span>
+      <div class="table-picker">
+        @for (option of tableOptions; track option.value) {
+          <button
+            type="button"
+            class="table-option"
+            [class.table-option--active]="selectedTable() === option.value"
+            (click)="selectTable(option.value)"
+          >
+            {{ option.label }}
+          </button>
+        }
+      </div>
+      <p class="generate__table-description">{{ selectedTableInfo().description }}</p>
+    </div>
+
     <div class="mode-toggle">
-      <button type="button" class="chip" [class.chip--active]="mode() === 'rows'" (click)="setMode('rows')">By row count</button>
-      <button type="button" class="chip" [class.chip--active]="mode() === 'size'" (click)="setMode('size')">By storage size</button>
+      <button type="button" class="chip" [class.chip--active]="mode() === 'rows'" (click)="setMode('rows')">Jumlah baris</button>
+      <button type="button" class="chip" [class.chip--active]="mode() === 'size'" (click)="setMode('size')">Perkiraan ukuran</button>
     </div>
 
     @if (mode() === 'rows') {
       <label class="field">
-        <span>Target row count</span>
+        <span>Berapa baris data?</span>
         <input type="number" [value]="rowCount()" (input)="setRowCount($any($event.target).value)" min="1" />
       </label>
     } @else {
       <label class="field">
-        <span>Target storage size (MB)</span>
+        <span>Target ukuran data (MB)</span>
         <input type="number" [value]="targetMb()" (input)="setTargetMb($any($event.target).value)" min="1" />
       </label>
-      <p class="generate__estimate mono">≈ {{ estimatedRowsFromSize() | number }} rows (estimate, ~420 bytes/row)</p>
+      <p class="generate__estimate mono">≈ {{ estimatedRowsFromSize() | number }} baris (perkiraan)</p>
     }
 
     <button type="button" class="btn btn--primary" [disabled]="submitting()" (click)="enqueue()">
-      {{ submitting() ? 'Enqueuing…' : 'Generate data' }}
+      {{ submitting() ? 'Mengirim…' : 'Generate data' }}
     </button>
 
     @if (justEnqueued()) {
-      <p class="generate__success">Job enqueued — check Job Monitor for progress.</p>
+      <p class="generate__success">Permintaan terkirim — cek Job Monitor untuk melihat progresnya.</p>
+    }
+    @if (error()) {
+      <p class="generate__error">{{ error() }}</p>
     }
   </div>
 

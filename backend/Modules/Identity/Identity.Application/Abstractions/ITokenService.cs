@@ -2,9 +2,7 @@ using Identity.Domain.Entities;
 
 namespace Identity.Application.Abstractions;
 
-/// <summary>
-/// Issues JWTs carrying the user's id/email/role claims (AGENTS.md section 4).
-/// </summary>
+// Issues a JWT with the user's id/email/role embedded as claims.
 public interface ITokenService
 {
     (string Token, DateTimeOffset ExpiresAt) IssueToken(User user);

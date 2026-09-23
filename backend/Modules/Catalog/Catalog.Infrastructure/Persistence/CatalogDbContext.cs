@@ -4,12 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Persistence;
 
-/// <summary>
-/// DbContext scoped to the `catalog` Postgres schema. Also defines the indexes
-/// referenced by the Benchmark module's read benchmark (AGENTS.md section 6.1):
-/// Produk (Product) indexes on the columns actually queryable from the column
-/// picker; deliberately no index on a "notes"-equivalent free-text column.
-/// </summary>
+// Product indexes match the columns queryable from the Benchmark module's column picker (AGENTS.md section 6.1).
 public class CatalogDbContext : DbContext
 {
     public const string Schema = "catalog";
@@ -55,14 +50,7 @@ public class CatalogDbContext : DbContext
     }
 }
 
-/// <summary>
-/// Pins the audit columns (created_at, created_by, updated_at, updated_by,
-/// deleted_at, deleted_by) immediately after the primary key on every table
-/// backed by a <see cref="BaseEntity"/>, regardless of the entity's own
-/// property declaration order. Duplicated per-module (rather than shared via
-/// BuildingBlocks) so BuildingBlocks — referenced by Domain projects too —
-/// never takes an EF Core dependency.
-/// </summary>
+// Duplicated per-module rather than shared via BuildingBlocks, so BuildingBlocks (referenced by Domain projects too) never takes an EF Core dependency.
 internal static class AuditColumns
 {
     public static void Configure(ModelBuilder modelBuilder)

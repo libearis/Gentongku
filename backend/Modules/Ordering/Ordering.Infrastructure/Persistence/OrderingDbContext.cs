@@ -4,7 +4,6 @@ using Ordering.Domain.Entities;
 
 namespace Ordering.Infrastructure.Persistence;
 
-/// <summary>DbContext scoped to the `ordering` Postgres schema.</summary>
 public class OrderingDbContext : DbContext
 {
     public const string Schema = "ordering";
@@ -33,14 +32,7 @@ public class OrderingDbContext : DbContext
     }
 }
 
-/// <summary>
-/// Pins the audit columns (created_at, created_by, updated_at, updated_by,
-/// deleted_at, deleted_by) immediately after the primary key on every table
-/// backed by a <see cref="BaseEntity"/>, regardless of the entity's own
-/// property declaration order. Duplicated per-module (rather than shared via
-/// BuildingBlocks) so BuildingBlocks — referenced by Domain projects too —
-/// never takes an EF Core dependency.
-/// </summary>
+// Duplicated per-module instead of shared via BuildingBlocks so BuildingBlocks never takes an EF Core dependency.
 internal static class AuditColumns
 {
     public static void Configure(ModelBuilder modelBuilder)

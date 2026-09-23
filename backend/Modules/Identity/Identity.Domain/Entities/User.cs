@@ -3,14 +3,7 @@ using Identity.Domain.Enums;
 
 namespace Identity.Domain.Entities;
 
-/// <summary>
-/// Identity module aggregate root. Lives in schema `identity.users`.
-/// Password is stored as a salted hash only (see PasswordHasher in Infrastructure).
-/// Seller-specific profile data (store name) is intentionally NOT stored here —
-/// per AGENTS.md section 3 ("no cross-schema foreign keys"), the store profile
-/// belongs to the Catalog module (catalog.seller_profiles) and is created via a
-/// plain Id reference (UserId) resolved through Catalog's own Application layer.
-/// </summary>
+// Seller store-profile data intentionally isn't stored here (no cross-schema FKs) — it lives in Catalog (catalog.seller_profiles), keyed by UserId.
 public class User : BaseEntity
 {
     public string Username { get; private set; } = default!;

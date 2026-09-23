@@ -2,14 +2,7 @@ using BuildingBlocks.Entities;
 
 namespace Catalog.Domain.Entities;
 
-/// <summary>
-/// Seller's store profile (name, address, category tags). Keyed by the
-/// Identity module's UserId as a plain reference, per AGENTS.md section 3
-/// ("cross-module references are stored as plain IDs"). This is where the
-/// Seller registration's store name (AGENTS.md section 4) is persisted —
-/// documented choice: Catalog owns storefront-facing seller data, Identity
-/// stays purely about auth/roles.
-/// </summary>
+// Keyed by Identity's UserId as a plain reference (AGENTS.md section 3); Catalog owns storefront-facing seller data, Identity stays purely auth/roles.
 public class SellerProfile : BaseEntity
 {
     public Guid UserId { get; private set; }

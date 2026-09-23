@@ -11,9 +11,7 @@
   justify-content: center;
   padding: 24px;
   overflow: hidden;
-  /* Matches the bg SVG's own <rect> fill, so "meet" letterboxing (when the
-     viewport's aspect ratio differs from the SVG's 800x600 viewBox) blends
-     in seamlessly instead of showing a mismatched edge. */
+  /* Matches the bg SVG's own <rect> fill so "meet" letterboxing blends in instead of showing a mismatched edge. */
   background: #f0e4d3;
 }
 

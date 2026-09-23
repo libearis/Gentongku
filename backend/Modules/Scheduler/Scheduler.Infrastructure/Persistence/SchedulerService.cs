@@ -23,14 +23,14 @@ public sealed class SchedulerService : ISchedulerService
         var jobRun = new JobRun
         {
             HangfireJobId = string.Empty,
-            JobType = "GenerateDummyData",
+            JobType = $"GenerateDummyData:{request.Table}",
             Status = "Processing"
         };
         _db.JobRuns.Add(jobRun);
         await _db.SaveChangesAsync(ct);
 
         var hangfireId = _backgroundJobClient.Enqueue<GenerateDummyDataJob>(
-            job => job.RunAsync(jobRun.Id, request.TargetRowCount, request.TargetStorageBytes));
+            job => job.RunAsync(jobRun.Id, request.Table, request.TargetRowCount, request.TargetStorageBytes));
 
         jobRun.HangfireJobId = hangfireId;
         await _db.SaveChangesAsync(ct);

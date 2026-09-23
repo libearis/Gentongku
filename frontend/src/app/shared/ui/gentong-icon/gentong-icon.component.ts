@@ -1,11 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-/**
- * Cart affordance icon — a small gentong/jug glyph instead of a generic
- * shopping-cart/basket icon (AGENTS.md section 11, deliberate brand choice).
- * Keep this component as the single source for the cart glyph wherever it
- * shows up (nav bar badge, empty-cart illustration, etc.).
- */
+// Deliberately a gentong/jug glyph, not a generic cart icon — keep this as the single source for it everywhere.
 @Component({
   selector: 'app-gentong-icon',
   standalone: true,

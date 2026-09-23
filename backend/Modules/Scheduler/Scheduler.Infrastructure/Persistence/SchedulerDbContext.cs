@@ -3,7 +3,6 @@ using Scheduler.Infrastructure.Entities;
 
 namespace Scheduler.Infrastructure.Persistence;
 
-/// <summary>DbContext scoped to the `scheduler` Postgres schema.</summary>
 public class SchedulerDbContext : DbContext
 {
     public const string Schema = "scheduler";

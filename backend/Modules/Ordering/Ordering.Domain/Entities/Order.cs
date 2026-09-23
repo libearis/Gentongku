@@ -3,12 +3,7 @@ using Ordering.Domain.Enums;
 
 namespace Ordering.Domain.Entities;
 
-/// <summary>
-/// The "Order" read-benchmark table (~2.4M rows at scale), AGENTS.md section 6.1.
-/// Indexed columns: Status, CreatedAt, BuyerId. `Notes` is intentionally left
-/// unindexed to demonstrate the "no index -> degrades to live query" teaching
-/// behavior described in AGENTS.md section 6.1.
-/// </summary>
+// Notes is intentionally left unindexed to demonstrate the "no index -> degrades to live query" behavior (AGENTS.md 6.1).
 public class Order : BaseEntity
 {
     public Guid BuyerId { get; private set; }

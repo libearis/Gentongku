@@ -4,7 +4,7 @@ import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Product } from './product.model';
 
-/** Shape returned by the Catalog module's `GET /api/catalog/products[/:id]` (ProductDto). */
+// Shape returned by the Catalog module's `GET /api/catalog/products[/:id]` (ProductDto).
 interface ApiProductDto {
   id: string;
   name: string;
@@ -25,12 +25,7 @@ const CATEGORY_EMOJI: Record<string, string> = {
   Dekorasi: '🐖',
 };
 
-/**
- * Reads real Catalog data from the backend (AGENTS.md section 3's Catalog
- * module). The backend doesn't model product variants yet, so each product
- * is given a single "Standar" variant so the existing cart/checkout flow
- * (which is keyed on product + variant) keeps working unchanged.
- */
+// Backend doesn't model product variants yet, so each product gets a single "Standar" variant to keep the cart/checkout flow working unchanged.
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private readonly http = inject(HttpClient);

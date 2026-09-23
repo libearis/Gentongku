@@ -12,11 +12,7 @@ public interface IAuthService
     Task<Result<AuthResponse>> LoginAsync(LoginRequest request, CancellationToken ct = default);
 }
 
-/// <summary>
-/// Register/Login use cases. No self-registration for Admin: RegisterAsync
-/// rejects UserRole.Admin outright (AGENTS.md section 4) — Admin accounts are
-/// created only via the seed data migration (see Identity.Infrastructure/Persistence/IdentitySeeder.cs).
-/// </summary>
+// No self-registration for Admin: RegisterAsync rejects UserRole.Admin outright; Admin accounts come only from IdentitySeeder.
 public sealed class AuthService : IAuthService
 {
     private readonly IUserRepository _users;

@@ -1,10 +1,6 @@
 namespace Identity.Domain.Enums;
 
-/// <summary>
-/// The three roles supported by the app (AGENTS.md section 4).
-/// No self-registration for Admin — Admin accounts are seeded/created
-/// from inside the Admin -> Users module only.
-/// </summary>
+// No self-registration for Admin — Admin accounts are seeded, never created through registration.
 public enum UserRole
 {
     Admin = 0,

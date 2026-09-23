@@ -7,12 +7,7 @@ services:
       - "5000:5000"
     environment:
       ASPNETCORE_URLS: "http://+:5000"
-      # NOTE: Postgres runs as a LOCAL instance on the host machine, not in this
-      # compose file (see docs/local-postgres.md). From inside a Windows/Mac
-      # Docker Desktop container, "localhost" means the container itself, so
-      # this is overridden here to reach the host's Postgres via the special
-      # Docker Desktop DNS name. On Linux Docker you may need
-      # --add-host=host.docker.internal:host-gateway or the host's real LAN IP.
+      # Postgres runs locally on the host, not in this compose file — host.docker.internal reaches it from the container.
       ConnectionStrings__Default: "Host=host.docker.internal;Port=5432;Database=gentongku;Username=postgres;Password=${POSTGRES_PASSWORD}"
       Redis__ConnectionString: "redis:6379"
       Seq__ServerUrl: "http://seq:5341"

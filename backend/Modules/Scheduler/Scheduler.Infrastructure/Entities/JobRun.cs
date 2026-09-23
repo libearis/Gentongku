@@ -1,11 +1,6 @@
 namespace Scheduler.Infrastructure.Entities;
 
-/// <summary>
-/// Thin sync record keyed by the Hangfire job id, kept in sync from within the
-/// job itself (AGENTS.md section 7: "persist a thin job_runs row ... keep it in
-/// sync from within the job itself"). This does NOT replace Hangfire's own
-/// storage/dashboard — it only powers the frontend's polling Job Monitor list.
-/// </summary>
+// Status/CompletedAt are updated by the job itself as it runs, not by the enqueuing service.
 public class JobRun
 {
     public Guid Id { get; set; } = Guid.NewGuid();

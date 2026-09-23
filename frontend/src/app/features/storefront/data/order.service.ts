@@ -3,15 +3,7 @@ import { Observable, delay, of } from 'rxjs';
 import { CartLine } from './cart-store.service';
 import { Order, PaymentMethod } from './order.model';
 
-/**
- * Placeholder order history/checkout service.
- *
- * Ordering module on the backend isn't wired up yet, so orders are kept in
- * an in-memory signal seeded with a couple of past orders. Swapping to the
- * real API is a one-file change: replace `placeOrder`/`list` bodies with
- * `HttpClient` calls to `${environment.apiUrl}/ordering/orders`, keeping the
- * same method signatures.
- */
+// Placeholder: backend Ordering module isn't wired up yet, so orders live in an in-memory signal; swap by replacing placeOrder/list bodies with HttpClient calls to ordering/orders.
 @Injectable({ providedIn: 'root' })
 export class OrderService {
   private readonly _orders = signal<Order[]>([

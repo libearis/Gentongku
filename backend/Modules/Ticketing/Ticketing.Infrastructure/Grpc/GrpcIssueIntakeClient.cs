@@ -17,14 +17,7 @@ public sealed class IssueIntakeOptions
     public int Port { get; set; } = 50051;
 }
 
-/// <summary>
-/// Real Grpc.Net.Client-based client for TaskFlow's IssueIntake service
-/// (docs/external-issue-intake.md). Plaintext HTTP/2 only — no TLS, no
-/// grpc-web/Envoy (that indirection is for browser clients only; this call
-/// always originates from the .NET backend, per AGENTS.md section 8).
-/// Maps INVALID_ARGUMENT / INTERNAL to friendly Result.Failure messages
-/// instead of swallowing them as a generic error.
-/// </summary>
+// Plaintext HTTP/2 only, no TLS or grpc-web/Envoy — this call always originates from the .NET backend, never a browser client.
 public sealed class GrpcIssueIntakeClient : IIssueIntakeClient
 {
     private readonly IssueIntakeOptions _options;
@@ -41,8 +34,7 @@ public sealed class GrpcIssueIntakeClient : IIssueIntakeClient
 
     public async Task<Result<CreateTicketResult>> CreateIssueAsync(CreateTicketRequest request, CancellationToken ct = default)
     {
-        // Plaintext HTTP/2 requires this AppContext switch for Grpc.Net.Client
-        // when not using TLS (dev/demo setup per docs/external-issue-intake.md section 2).
+        // Required for Grpc.Net.Client to use plaintext HTTP/2 without TLS.
         AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
         var address = $"http://{_options.Host}:{_options.Port}";

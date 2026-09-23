@@ -42,6 +42,41 @@
   color: var(--text-muted);
 }
 
+.field__label {
+  color: var(--text-muted);
+}
+
+.table-picker {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.table-option {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.table-option--active {
+  border-color: var(--color-terracotta);
+  background: var(--color-terracotta);
+  color: #fff;
+}
+
+.generate__table-description {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
 .field input {
   padding: 8px 10px;
   border-radius: var(--radius-sm);
@@ -58,6 +93,12 @@
 
 .generate__success {
   color: #4caf6f;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.generate__error {
+  color: #e0685c;
   font-size: 0.85rem;
   margin: 0;
 }

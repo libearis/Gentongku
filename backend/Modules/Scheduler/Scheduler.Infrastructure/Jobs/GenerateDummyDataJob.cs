@@ -1,43 +1,61 @@
+using Catalog.Application.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Scheduler.Infrastructure.Entities;
+using Ordering.Application.Abstractions;
+using Scheduler.Application.DTOs;
 using Scheduler.Infrastructure.Persistence;
 
 namespace Scheduler.Infrastructure.Jobs;
 
-/// <summary>
-/// Hangfire job body. TODO (next implementation pass, AGENTS.md section 7):
-/// generate realistic dummy Catalog/Ordering rows toward the requested row
-/// count or estimated-from-storage-size row count. This stub only proves the
-/// Hangfire pipeline + job_runs sync round-trip (Processing -> Success/Error).
-/// </summary>
 public sealed class GenerateDummyDataJob
 {
+    // Average per-row size estimate, not byte-precise.
+    private const int AvgRowBytes = 420;
+
+    // Dev-safety cap to avoid accidentally inserting millions of rows into a local Postgres instance.
+    private const int MaxRowsPerRun = 50_000;
+
     private readonly SchedulerDbContext _db;
+    private readonly ICatalogDummyDataGenerator _catalogGenerator;
+    private readonly IOrderingDummyDataGenerator _orderingGenerator;
     private readonly ILogger<GenerateDummyDataJob> _logger;
 
-    public GenerateDummyDataJob(SchedulerDbContext db, ILogger<GenerateDummyDataJob> logger)
+    public GenerateDummyDataJob(
+        SchedulerDbContext db,
+        ICatalogDummyDataGenerator catalogGenerator,
+        IOrderingDummyDataGenerator orderingGenerator,
+        ILogger<GenerateDummyDataJob> logger)
     {
         _db = db;
+        _catalogGenerator = catalogGenerator;
+        _orderingGenerator = orderingGenerator;
         _logger = logger;
     }
 
-    public async Task RunAsync(Guid jobRunId, long? targetRowCount, long? targetStorageBytes)
+    public async Task RunAsync(Guid jobRunId, DummyDataTable table, long? targetRowCount, long? targetStorageBytes)
     {
         var jobRun = await _db.JobRuns.FirstOrDefaultAsync(j => j.Id == jobRunId);
         if (jobRun is null) return;
 
         try
         {
-            _logger.LogInformation(
-                "GenerateDummyDataJob starting (jobRunId={JobRunId}, targetRowCount={TargetRowCount}, targetStorageBytes={TargetStorageBytes}) — TODO: real generation, see AGENTS.md section 7",
-                jobRunId, targetRowCount, targetStorageBytes);
+            var requestedRows = targetRowCount ?? (targetStorageBytes ?? 0) / AvgRowBytes;
+            var rowCount = (int)Math.Clamp(requestedRows, 1, MaxRowsPerRun);
 
-            // TODO: actually insert dummy Catalog.Products / Ordering.Orders rows here.
-            await Task.Delay(50);
+            _logger.LogInformation(
+                "GenerateDummyDataJob starting (jobRunId={JobRunId}, table={Table}, rowCount={RowCount})",
+                jobRunId, table, rowCount);
+
+            var inserted = table switch
+            {
+                DummyDataTable.Category => await _catalogGenerator.GenerateCategoriesAsync(rowCount),
+                DummyDataTable.Product => await _catalogGenerator.GenerateProductsAsync(rowCount),
+                DummyDataTable.Order => await _orderingGenerator.GenerateOrdersAsync(rowCount),
+                _ => throw new ArgumentOutOfRangeException(nameof(table), table, "Unknown dummy-data table"),
+            };
 
             jobRun.Status = "Success";
-            jobRun.ResultMessage = "Stub run completed (no rows generated yet — TODO).";
+            jobRun.ResultMessage = $"Generated {inserted} {table} row(s).";
         }
         catch (Exception ex)
         {

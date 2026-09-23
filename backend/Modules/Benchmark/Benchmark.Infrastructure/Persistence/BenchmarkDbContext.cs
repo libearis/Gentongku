@@ -3,12 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Benchmark.Infrastructure.Persistence;
 
-/// <summary>
-/// DbContext scoped to the `benchmark` Postgres schema. Only owns the two
-/// write-benchmark tables (AGENTS.md section 6.2) — the read benchmark queries
-/// Catalog/Ordering tables directly through their own public query contracts,
-/// it does not duplicate their schemas.
-/// </summary>
+// Only owns the two write-benchmark tables; read benchmarks query Catalog/Ordering directly instead of duplicating their schemas.
 public class BenchmarkDbContext : DbContext
 {
     public const string Schema = "benchmark";
@@ -37,14 +32,11 @@ public class BenchmarkDbContext : DbContext
         {
             b.ToTable("orders_plain");
             b.HasKey(o => o.Id);
-            // Deliberately zero secondary indexes (AGENTS.md section 6.2).
+            // Deliberately zero secondary indexes — this is the "no index" comparison arm.
             b.Property(o => o.Status).HasMaxLength(20);
             b.Property(o => o.TotalAmount).HasColumnType("numeric(18,2)");
         });
 
-        // orders_indexed/orders_plain deliberately skip the standard audit
-        // columns (created_by/updated_at/updated_by/deleted_at/deleted_by) —
-        // they're timing-sensitive write-benchmark rows, not domain entities
-        // (see the "no shared base entity on purpose" note above).
+        // orders_indexed/orders_plain deliberately skip the standard audit columns (created_by/updated_at/updated_by/deleted_at/deleted_by) — they're timing-sensitive write-benchmark rows, not domain entities.
     }
 }

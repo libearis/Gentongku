@@ -1,10 +1,6 @@
 namespace BuildingBlocks.Results;
 
-/// <summary>
-/// Result of an operation that has no return value beyond success/failure.
-/// Application-layer handlers should return this (or Result&lt;T&gt;) instead of
-/// throwing for expected failure paths (AGENTS.md section 12).
-/// </summary>
+// Application-layer handlers return this (or Result<T>) instead of throwing for expected failure paths.
 public class Result
 {
     public bool IsSuccess { get; }
@@ -27,9 +23,6 @@ public class Result
     public bool IsFailure => !IsSuccess;
 }
 
-/// <summary>
-/// Result of an operation that returns a value of type <typeparamref name="T"/> on success.
-/// </summary>
 public sealed class Result<T> : Result
 {
     public T? Value { get; }

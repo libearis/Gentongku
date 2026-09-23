@@ -3,11 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthStore } from '../../../core/auth/auth-store.service';
 import { WordmarkComponent } from '../../ui/wordmark/wordmark.component';
 
-/**
- * SellerShell: thin layout with a My Store / Shopping tab switcher.
- * "Shopping" is just a link into /storefront/** (BuyerShell + buyer
- * components) — no duplicate implementation, per AGENTS.md section 4/5.
- */
+// "Shopping" tab links into /storefront/** (BuyerShell) rather than duplicating that UI here.
 @Component({
   selector: 'app-seller-shell',
   standalone: true,

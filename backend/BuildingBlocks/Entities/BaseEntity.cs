@@ -1,10 +1,5 @@
 namespace BuildingBlocks.Entities;
 
-/// <summary>
-/// Base class for all aggregate roots / entities across modules.
-/// Provides identity, audit timestamps, and a domain-event buffer.
-/// See AGENTS.md section 3 (BuildingBlocks: shared kernel) and section 12 (coding conventions).
-/// </summary>
 public abstract class BaseEntity
 {
     public Guid Id { get; protected set; } = Guid.NewGuid();

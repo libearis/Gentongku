@@ -2,11 +2,7 @@ using Identity.Application.Abstractions;
 
 namespace Identity.Infrastructure.Services;
 
-/// <summary>
-/// Real password hashing via BCrypt.Net-Next (work factor 11). Chosen over a
-/// manual PBKDF2 implementation for battle-tested salt handling; documented here
-/// per the "document it" instruction for this pass.
-/// </summary>
+// Work factor 11, chosen over a manual PBKDF2 implementation for battle-tested salt handling.
 public sealed class BcryptPasswordHasher : IPasswordHasher
 {
     private const int WorkFactor = 11;

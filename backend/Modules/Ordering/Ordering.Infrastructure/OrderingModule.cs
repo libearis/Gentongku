@@ -18,6 +18,7 @@ public static class OrderingModule
             .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IOrderQueries, OrderQueries>();
+        services.AddScoped<IOrderingDummyDataGenerator, OrderingDummyDataGenerator>();
 
         return services;
     }

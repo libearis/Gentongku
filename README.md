@@ -14,34 +14,30 @@ app to live in.
 PostgreSQL · Redis · Hangfire · Serilog + Seq · JWT auth · gRPC (admin ->
 external ticketing service only)
 
-## Running it
+## Getting started
 
-**Backend** (needs a local Postgres — see `.env.example`):
+Needs a local Postgres instance (see `.env.example`) — it isn't part of
+`docker-compose.yml`.
 
-```bash
-cp .env.example .env   # fill in your local Postgres password
-cd backend
-dotnet run --project Host
-```
+1. `cp .env.example .env` and fill in your local Postgres password.
+2. Set up the database (creates it if missing, applies every module's schema,
+   seeds the admin account + sample catalog data):
+   ```bash
+   cd backend
+   dotnet run --project Host -- migrate
+   ```
+   Only needed once per database — safe to re-run any time (it no-ops on
+   whatever's already applied/seeded).
+3. Start everything:
+   ```bash
+   docker-compose up -d --build
+   ```
 
-**Frontend**:
-
-```bash
-cd frontend
-npm install
-npm start
-```
-
-**Or everything via Docker** (Postgres still runs locally, not in Docker —
-see `docker-compose.yml` comments):
-
-```bash
-docker-compose up -d --build
-```
+Login with the seeded admin account — see
+[`docs/dev-seed-credentials.md`](docs/dev-seed-credentials.md).
 
 ## Learn more
 
 For architecture, module boundaries, and the reasoning behind them, see
 [`docs/ARD.md`](docs/ARD.md). For the external gRPC ticketing integration,
-see [`docs/external-issue-intake.md`](docs/external-issue-intake.md). Dev-only
-seed credentials are in [`docs/dev-seed-credentials.md`](docs/dev-seed-credentials.md).
+see [`docs/external-issue-intake.md`](docs/external-issue-intake.md).

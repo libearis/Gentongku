@@ -9,13 +9,7 @@ public interface ICreateTicketService
     Task<Result<CreateTicketResult>> ExecuteAsync(CreateTicketRequest request, CancellationToken ct = default);
 }
 
-/// <summary>
-/// CreateTicket use case (AGENTS.md section 8 / docs/external-issue-intake.md).
-/// Fire-and-forget by design: on success we only store the returned issue_id
-/// locally (Ticketing.Infrastructure persists it), there is no polling for
-/// status changes. Failure mapping happens inside IIssueIntakeClient's
-/// implementation (INVALID_ARGUMENT / INTERNAL -> friendly Result.Failure).
-/// </summary>
+// Fire-and-forget by design: only the returned issue_id is stored locally, there is no polling for status changes.
 public sealed class CreateTicketService : ICreateTicketService
 {
     private readonly IIssueIntakeClient _client;

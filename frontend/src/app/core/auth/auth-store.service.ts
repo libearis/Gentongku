@@ -4,20 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthResponse, AuthUser, LoginRequest, RegisterRequest, Role } from './auth.models';
 
-/**
- * AuthStore — the single source of truth for the current session.
- *
- * Signal-based, analogous to a Pinia store: components read `user()`,
- * `role()`, `isAuthenticated()` via computed signals and never duplicate
- * role logic themselves (AGENTS.md section 11/12).
- *
- * Trade-off (documented per AGENTS.md section 4): the JWT is kept in an
- * in-memory signal only, never in localStorage. This means a full page
- * reload loses the session (no silent refresh-on-reload), which is an
- * accepted trade-off for this portfolio project in exchange for not
- * exposing the raw token to XSS-readable storage. A production app would
- * pair this with an httpOnly refresh-token cookie; that's out of scope here.
- */
+// JWT is kept only in this in-memory signal (never localStorage), so a page reload loses the session by design, trading silent refresh for XSS safety.
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
   private readonly http = inject(HttpClient);
@@ -52,7 +39,6 @@ export class AuthStore {
     this._user.set(null);
   }
 
-  /** Home route to land on right after auth, based on role. */
   homeRouteFor(role: Role): string {
     switch (role) {
       case 'Admin':

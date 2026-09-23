@@ -3,7 +3,6 @@ using Ordering.Application.Abstractions;
 
 namespace Gentongku.Api.Controllers;
 
-/// <summary>Trivial passthrough endpoint proving the Ordering module is wired end-to-end.</summary>
 [ApiController]
 [Route("api/orders")]
 public class OrdersController : ControllerBase

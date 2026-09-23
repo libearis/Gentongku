@@ -3,12 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Catalog.Infrastructure.Persistence;
 
-/// <summary>
-/// Design-time-only factory so `dotnet ef migrations add` can build the model
-/// without booting the full Host (which eagerly opens real Postgres/Redis
-/// connections at startup). Never used at runtime — the Host wires up
-/// <see cref="CatalogDbContext"/> itself via CatalogModule.
-/// </summary>
+// Design-time-only, so `dotnet ef migrations add` can build the model without booting the full Host and its real Postgres/Redis connections.
 public sealed class CatalogDbContextFactory : IDesignTimeDbContextFactory<CatalogDbContext>
 {
     public CatalogDbContext CreateDbContext(string[] args)

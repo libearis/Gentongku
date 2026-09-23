@@ -5,15 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Persistence;
 
-/// <summary>
-/// Seeds the single Admin account, since Admin has no self-registration path
-/// (AGENTS.md section 4). Runs idempotently at Host startup after migrations.
-///
-/// DEV-ONLY CREDENTIALS (see also docs/dev-seed-credentials.md):
-///   username: admin
-///   email:    admin@gentongku.local
-///   password: Admin#12345 (dev-only, change before any real deployment)
-/// </summary>
+// Runs idempotently at Host startup after migrations; dev-only admin credentials are documented in docs/dev-seed-credentials.md.
 public static class IdentitySeeder
 {
     public const string AdminUsername = "admin";

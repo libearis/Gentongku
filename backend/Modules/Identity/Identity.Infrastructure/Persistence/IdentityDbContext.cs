@@ -5,10 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Infrastructure.Persistence;
 
-/// <summary>
-/// DbContext scoped to the `identity` Postgres schema (AGENTS.md section 3:
-/// one schema per module, no cross-schema FKs).
-/// </summary>
+// One schema per module, no cross-schema FKs.
 public class IdentityDbContext : DbContext
 {
     public const string Schema = "identity";
@@ -40,14 +37,7 @@ public class IdentityDbContext : DbContext
     }
 }
 
-/// <summary>
-/// Pins the audit columns (created_at, created_by, updated_at, updated_by,
-/// deleted_at, deleted_by) immediately after the primary key on every table
-/// backed by a <see cref="BaseEntity"/>, regardless of the entity's own
-/// property declaration order. Duplicated per-module (rather than shared via
-/// BuildingBlocks) so BuildingBlocks — referenced by Domain projects too —
-/// never takes an EF Core dependency.
-/// </summary>
+// Duplicated per module rather than shared via BuildingBlocks, so BuildingBlocks (referenced by Domain projects too) never takes an EF Core dependency.
 internal static class AuditColumns
 {
     public static void Configure(ModelBuilder modelBuilder)

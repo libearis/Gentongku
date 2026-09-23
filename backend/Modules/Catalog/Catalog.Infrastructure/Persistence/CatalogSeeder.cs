@@ -3,16 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Persistence;
 
-/// <summary>
-/// Seeds a handful of categories/products under a reserved "System Seller"
-/// profile, so the storefront has real rows to read on a fresh database
-/// instead of an empty catalog (AGENTS.md section 5: dummy products "can be
-/// randomly assigned to any seller, or to a reserved System Seller").
-/// Runs idempotently at Host startup after migrations, same pattern as
-/// Identity.Infrastructure.Persistence.IdentitySeeder. This is a small fixed
-/// seed, not the Scheduler's on-demand dummy-data generator (AGENTS.md
-/// section 7), which is still a TODO.
-/// </summary>
+// Idempotent, run via `dotnet run -- migrate` (same pattern as IdentitySeeder); distinct from the Scheduler's on-demand dummy-data generator.
 public static class CatalogSeeder
 {
     public static readonly Guid SystemSellerId = Guid.Parse("00000000-0000-0000-0000-000000000001");

@@ -3,12 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Identity.Infrastructure.Persistence;
 
-/// <summary>
-/// Design-time-only factory so `dotnet ef migrations add` can build the model
-/// without booting the full Host (which eagerly opens real Postgres/Redis
-/// connections at startup). Never used at runtime — the Host wires up
-/// <see cref="IdentityDbContext"/> itself via IdentityModule.
-/// </summary>
+// Design-time only, for `dotnet ef migrations add`, so it doesn't boot the full Host and open real Postgres/Redis connections.
 public sealed class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbContext>
 {
     public IdentityDbContext CreateDbContext(string[] args)

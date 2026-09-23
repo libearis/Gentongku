@@ -1,12 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-/**
- * Brand wordmark: "Gentongku" with the "o" in "gentong" rendered as a small
- * pot glyph (AGENTS.md section 11). Inline SVG, `currentColor` fill so it
- * inherits text color per theme (light storefront vs dark admin). Reuse
- * this component anywhere the brand mark appears rather than re-deriving
- * the glyph markup.
- */
+// currentColor fill lets this adapt to both the light storefront and dark admin themes.
 @Component({
   selector: 'app-wordmark',
   standalone: true,

@@ -7,13 +7,7 @@ using Ticketing.Infrastructure;
 
 namespace Gentongku.Api.ModuleRegistration;
 
-/// <summary>
-/// Composition root: wires every module's own AddXModule() extension
-/// (AGENTS.md section 3 — "Host/ModuleRegistration/ one *.AddXModule()
-/// extension per module"). Each module registers its own DbContext and
-/// Application-layer service implementations; modules never reference each
-/// other directly, only through interfaces registered here.
-/// </summary>
+// Modules never reference each other directly, only through interfaces registered here.
 public static class ModuleRegistrationExtensions
 {
     public static IServiceCollection AddGentongkuModules(this IServiceCollection services, IConfiguration configuration)

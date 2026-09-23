@@ -5,11 +5,7 @@ import { CartStore } from '../../../features/storefront/data/cart-store.service'
 import { GentongIconComponent } from '../../ui/gentong-icon/gentong-icon.component';
 import { WordmarkComponent } from '../../ui/wordmark/wordmark.component';
 
-/**
- * Thin layout shell for buyer-facing storefront views — nav + router-outlet
- * only, no business logic (AGENTS.md section 11). Used by Buyer directly,
- * and by Admin/Seller when they land on /storefront/** too.
- */
+// Also used by Admin (read-only) and Seller when they land on /storefront/**, not just Buyer.
 @Component({
   selector: 'app-buyer-shell',
   standalone: true,
