@@ -1,0 +1,22 @@
+<section class="wallet">
+  <h1>Wallet</h1>
+  <p class="wallet__note">Top up langsung menambah saldo — belum ada gateway pembayaran asli.</p>
+
+  <div class="card wallet__balance-card">
+    <span>Saldo saat ini</span>
+    <strong class="mono">{{ balance() === null ? '…' : formatPrice(balance()!) }}</strong>
+  </div>
+
+  <div class="card wallet__topup-card">
+    <h2>Top up</h2>
+    <div class="wallet__topup-form">
+      <input type="number" min="1" [value]="topUpAmount()" (input)="setTopUpAmount($any($event.target).value)" />
+      <button type="button" class="btn btn--primary" [disabled]="toppingUp()" (click)="topUp()">
+        {{ toppingUp() ? 'Memproses…' : 'Top up' }}
+      </button>
+    </div>
+    @if (justToppedUp()) {
+      <p class="wallet__success">Saldo berhasil ditambahkan.</p>
+    }
+  </div>
+</section>

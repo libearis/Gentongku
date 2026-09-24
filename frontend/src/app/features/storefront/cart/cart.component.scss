@@ -11,10 +11,19 @@
 
 .cart-line {
   display: grid;
-  grid-template-columns: 48px 1fr auto auto auto;
+  grid-template-columns: 48px 1fr auto auto auto auto;
   align-items: center;
   gap: 16px;
   padding: 12px 16px;
+}
+
+.cart-line__expedition select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
 }
 
 .cart-line__image {

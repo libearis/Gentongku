@@ -10,7 +10,7 @@
   }
 }
 
-.checkout__payment,
+.checkout__wallet,
 .checkout__summary {
   padding: 20px;
 }
@@ -20,20 +20,33 @@
   font-size: 0.85rem;
 }
 
-.payment-option {
+.wallet-balance {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  margin-bottom: 8px;
-  cursor: pointer;
+  padding: 14px 0;
+  font-size: 1.1rem;
 }
 
-.payment-option--active {
-  border-color: var(--color-terracotta);
-  background: #fbeee6;
+.wallet-topup {
+  display: flex;
+  gap: 8px;
+}
+
+.wallet-topup input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.checkout__error {
+  color: #c0392b;
+  font-size: 0.85rem;
+  margin: 10px 0 0;
 }
 
 .summary-line {

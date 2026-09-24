@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CartLine, CartStore } from '../data/cart-store.service';
+import { EXPEDITION_OPTIONS } from '../data/expedition';
 
 @Component({
   selector: 'app-cart',
@@ -11,9 +12,14 @@ import { CartLine, CartStore } from '../data/cart-store.service';
 })
 export class CartComponent {
   readonly cart = inject(CartStore);
+  readonly expeditionOptions = EXPEDITION_OPTIONS;
 
   updateQty(line: CartLine, qty: number): void {
     this.cart.updateQty(line.product, line.variant, qty);
+  }
+
+  setExpedition(line: CartLine, courier: string): void {
+    this.cart.setExpedition(line.product, line.variant, courier);
   }
 
   remove(line: CartLine): void {

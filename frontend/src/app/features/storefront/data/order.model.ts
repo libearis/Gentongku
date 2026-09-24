@@ -1,18 +1,28 @@
 export type OrderStatus = 'Pending' | 'Paid' | 'Shipped' | 'Completed';
-export type PaymentMethod = 'transfer' | 'qris' | 'cod';
 
 export interface OrderItem {
+  productId: string;
   productName: string;
-  variantLabel: string;
-  qty: number;
-  price: number;
+  unitPrice: number;
+  quantity: number;
+  expeditionCourier: string;
+  expeditionCost: number;
 }
 
 export interface Order {
   id: string;
-  placedAt: string;
+  buyerId: string;
+  sellerId: string;
+  checkoutGroupId: string;
+  totalAmount: number;
   status: OrderStatus;
-  paymentMethod: PaymentMethod;
+  notes: string | null;
+  createdAt: string;
   items: OrderItem[];
-  total: number;
+}
+
+export interface CheckoutItem {
+  productId: string;
+  quantity: number;
+  expeditionCourier: string;
 }

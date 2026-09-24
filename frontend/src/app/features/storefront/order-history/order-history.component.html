@@ -1,15 +1,15 @@
 <section class="orders">
-  <h1>Order history</h1>
+  <h1>Riwayat Pesanan</h1>
 
   @if (orders().length === 0) {
-    <p>No orders yet.</p>
+    <p>Belum ada pesanan.</p>
   }
 
   @for (order of orders(); track order.id) {
     <div class="order card">
       <div class="order__header">
-        <strong class="mono">{{ order.id }}</strong>
-        <span class="order__date">{{ order.placedAt | date: 'medium' }}</span>
+        <strong class="mono">{{ order.id.slice(0, 8) }}</strong>
+        <span class="order__date">{{ order.createdAt | date: 'medium' }}</span>
       </div>
 
       <div class="order__stages">
@@ -22,17 +22,17 @@
       </div>
 
       <ul class="order__items">
-        @for (item of order.items; track item.productName + item.variantLabel) {
-          <li>{{ item.productName }} ({{ item.variantLabel }}) &times; {{ item.qty }}</li>
+        @for (item of order.items; track item.productId) {
+          <li>{{ item.productName }} &times; {{ item.quantity }} &middot; {{ item.expeditionCourier }}</li>
         }
       </ul>
 
       <div class="order__total">
-        Total: <span class="mono">{{ formatPrice(order.total) }}</span>
+        Total: <span class="mono">{{ formatPrice(order.totalAmount) }}</span>
       </div>
 
       @if (order.status === 'Completed') {
-        <button type="button" class="btn btn--ghost">Leave a review</button>
+        <button type="button" class="btn btn--ghost">Beri ulasan</button>
       }
     </div>
   }

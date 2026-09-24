@@ -17,6 +17,13 @@
             <span class="mono">{{ line.qty }}</span>
             <button type="button" (click)="updateQty(line, line.qty + 1)">+</button>
           </div>
+          <div class="cart-line__expedition">
+            <select [value]="line.expeditionCourier" (change)="setExpedition(line, $any($event.target).value)">
+              @for (option of expeditionOptions; track option.code) {
+                <option [value]="option.code">{{ option.label }} ({{ formatPrice(option.cost) }})</option>
+              }
+            </select>
+          </div>
           <div class="cart-line__price mono">
             {{ formatPrice((line.product.price + line.variant.priceDelta) * line.qty) }}
           </div>

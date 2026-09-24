@@ -91,6 +91,7 @@ export class AuthPageComponent {
         username,
         email,
         password,
+        displayName: username,
         role,
         ...(role === 'Seller' ? { storeName } : {}),
       })

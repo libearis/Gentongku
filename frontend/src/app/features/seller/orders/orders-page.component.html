@@ -1,0 +1,38 @@
+<section class="seller-orders">
+  <h1>Pesanan Masuk</h1>
+
+  @if (orders().length === 0) {
+    <p>Belum ada pesanan masuk.</p>
+  }
+
+  @for (order of orders(); track order.id) {
+    <div class="order card">
+      <div class="order__header">
+        <strong class="mono">{{ order.id.slice(0, 8) }}</strong>
+        <span class="badge">{{ order.status }}</span>
+        <span class="order__date">{{ order.createdAt | date: 'medium' }}</span>
+      </div>
+
+      <ul class="order__items">
+        @for (item of order.items; track item.productId) {
+          <li>{{ item.productName }} &times; {{ item.quantity }} &middot; {{ item.expeditionCourier }}</li>
+        }
+      </ul>
+
+      <div class="order__footer">
+        <span class="mono">Total: {{ formatPrice(order.totalAmount) }}</span>
+
+        @if (order.status === 'Paid') {
+          <button type="button" class="btn btn--primary" [disabled]="busyOrderId() === order.id" (click)="ship(order)">
+            Tandai Sudah Dikirim
+          </button>
+        }
+        @if (order.status === 'Shipped') {
+          <button type="button" class="btn btn--primary" [disabled]="busyOrderId() === order.id" (click)="deliver(order)">
+            Tandai Sudah Sampai
+          </button>
+        }
+      </div>
+    </div>
+  }
+</section>

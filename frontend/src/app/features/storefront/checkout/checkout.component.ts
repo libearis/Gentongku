@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartStore } from '../data/cart-store.service';
 import { OrderService } from '../data/order.service';
-import { PaymentMethod } from '../data/order.model';
+import { WalletService } from '../data/wallet.service';
 
 @Component({
   selector: 'app-checkout',
@@ -13,22 +13,54 @@ import { PaymentMethod } from '../data/order.model';
 export class CheckoutComponent {
   readonly cart = inject(CartStore);
   private readonly orderService = inject(OrderService);
+  private readonly walletService = inject(WalletService);
   private readonly router = inject(Router);
 
-  readonly paymentMethod = signal<PaymentMethod>('transfer');
+  readonly walletBalance = signal<number | null>(null);
   readonly placing = signal(false);
+  readonly topUpAmount = signal(100_000);
+  readonly error = signal<string | null>(null);
 
-  selectPayment(method: PaymentMethod): void {
-    this.paymentMethod.set(method);
+  constructor() {
+    this.refreshBalance();
+  }
+
+  refreshBalance(): void {
+    this.walletService.getBalance().subscribe((balance) => this.walletBalance.set(balance));
+  }
+
+  setTopUpAmount(value: string): void {
+    const n = Number(value);
+    this.topUpAmount.set(Number.isFinite(n) && n > 0 ? n : 0);
+  }
+
+  topUp(): void {
+    if (this.topUpAmount() <= 0) return;
+    this.walletService.topUp(this.topUpAmount()).subscribe((balance) => this.walletBalance.set(balance));
   }
 
   placeOrder(): void {
     if (this.cart.lines().length === 0) return;
     this.placing.set(true);
-    this.orderService.placeOrder(this.cart.lines(), this.paymentMethod()).subscribe((order) => {
-      this.cart.clear();
-      this.placing.set(false);
-      this.router.navigateByUrl('/storefront/orders');
+    this.error.set(null);
+
+    const items = this.cart.lines().map((l) => ({
+      productId: l.product.id,
+      quantity: l.qty,
+      expeditionCourier: l.expeditionCourier,
+    }));
+
+    this.orderService.checkout(items).subscribe({
+      next: () => {
+        this.cart.clear();
+        this.placing.set(false);
+        this.router.navigateByUrl('/storefront/orders');
+      },
+      error: (err) => {
+        this.placing.set(false);
+        this.error.set(err.error?.error ?? 'Checkout gagal. Coba lagi.');
+        this.refreshBalance();
+      },
     });
   }
 

@@ -1,0 +1,42 @@
+.wallet__note {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  max-width: 480px;
+}
+
+.wallet__balance-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  margin: 16px 0;
+  font-size: 1.3rem;
+  max-width: 420px;
+}
+
+.wallet__topup-card {
+  padding: 20px;
+  max-width: 420px;
+}
+
+.wallet__topup-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.wallet__topup-form input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.wallet__success {
+  color: #4caf6f;
+  font-size: 0.85rem;
+  margin: 10px 0 0;
+}

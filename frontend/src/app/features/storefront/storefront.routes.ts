@@ -29,5 +29,10 @@ export const STOREFRONT_ROUTES: Routes = [
     loadComponent: () =>
       import('./order-history/order-history.component').then((m) => m.OrderHistoryComponent),
   },
+  {
+    path: 'wallet',
+    canActivate: [buyerFlowGuard],
+    loadComponent: () => import('./wallet/wallet.component').then((m) => m.WalletComponent),
+  },
   { path: '', pathMatch: 'full', redirectTo: 'home' },
 ];

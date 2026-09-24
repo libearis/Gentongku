@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { OrderStatus } from '../data/order.model';
 import { OrderService } from '../data/order.service';
+import { OrderStatus } from '../data/order.model';
 
 const STAGES: OrderStatus[] = ['Pending', 'Paid', 'Shipped', 'Completed'];
 

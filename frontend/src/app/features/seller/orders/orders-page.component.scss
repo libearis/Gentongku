@@ -1,0 +1,28 @@
+.order {
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+
+.order__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+}
+
+.order__date {
+  margin-left: auto;
+}
+
+.order__items {
+  margin: 0 0 12px;
+  padding-left: 18px;
+  font-size: 0.9rem;
+}
+
+.order__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

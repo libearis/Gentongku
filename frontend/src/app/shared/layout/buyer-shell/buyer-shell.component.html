@@ -6,6 +6,7 @@
       <a routerLink="/storefront/home" routerLinkActive="shell__link--active" class="shell__link">Home</a>
       @if (canShop()) {
         <a routerLink="/storefront/orders" routerLinkActive="shell__link--active" class="shell__link">Orders</a>
+        <a routerLink="/storefront/wallet" routerLinkActive="shell__link--active" class="shell__link">Wallet</a>
       }
       @if (auth.role() === 'Seller') {
         <a routerLink="/seller/my-store" class="shell__link">My Store</a>

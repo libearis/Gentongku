@@ -1,10 +1,16 @@
 import { Injectable, computed, signal } from '@angular/core';
+import { EXPEDITION_OPTIONS } from './expedition';
 import { Product, ProductVariant } from './product.model';
 
 export interface CartLine {
   product: Product;
   variant: ProductVariant;
   qty: number;
+  expeditionCourier: string;
+}
+
+function expeditionCost(courier: string): number {
+  return EXPEDITION_OPTIONS.find((o) => o.code === courier)?.cost ?? 0;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +20,7 @@ export class CartStore {
   readonly lines = this._lines.asReadonly();
   readonly itemCount = computed(() => this._lines().reduce((sum, l) => sum + l.qty, 0));
   readonly subtotal = computed(() =>
-    this._lines().reduce((sum, l) => sum + (l.product.price + l.variant.priceDelta) * l.qty, 0),
+    this._lines().reduce((sum, l) => sum + (l.product.price + l.variant.priceDelta) * l.qty + expeditionCost(l.expeditionCourier), 0),
   );
 
   add(product: Product, variant: ProductVariant, qty: number): void {
@@ -25,7 +31,7 @@ export class CartStore {
       );
       return;
     }
-    this._lines.update((lines) => [...lines, { product, variant, qty }]);
+    this._lines.update((lines) => [...lines, { product, variant, qty, expeditionCourier: EXPEDITION_OPTIONS[0].code }]);
   }
 
   updateQty(product: Product, variant: ProductVariant, qty: number): void {
@@ -35,6 +41,12 @@ export class CartStore {
     }
     this._lines.update((lines) =>
       lines.map((l) => (l.product.id === product.id && l.variant.id === variant.id ? { ...l, qty } : l)),
+    );
+  }
+
+  setExpedition(product: Product, variant: ProductVariant, courier: string): void {
+    this._lines.update((lines) =>
+      lines.map((l) => (l.product.id === product.id && l.variant.id === variant.id ? { ...l, expeditionCourier: courier } : l)),
     );
   }
 
