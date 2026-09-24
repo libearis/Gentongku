@@ -9,6 +9,7 @@ public class OrderingDbContext(DbContextOptions<OrderingDbContext> options) : Db
     public const string Schema = "ordering";
 
     public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,6 +25,26 @@ public class OrderingDbContext(DbContextOptions<OrderingDbContext> options) : Db
             b.HasIndex(o => o.Status);
             b.HasIndex(o => o.CreatedAt);
             b.HasIndex(o => o.BuyerId);
+            b.HasIndex(o => o.SellerId);
+            b.HasIndex(o => o.CheckoutGroupId);
+
+            b.Metadata.FindNavigation(nameof(Order.Items))!.SetPropertyAccessMode(PropertyAccessMode.Field);
+            b.HasMany(o => o.Items)
+                .WithOne()
+                .HasForeignKey(i => i.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<OrderItem>(b =>
+        {
+            b.ToTable("order_items");
+            b.HasKey(i => i.Id);
+            b.Property(i => i.ProductName).HasMaxLength(300).IsRequired();
+            b.Property(i => i.UnitPrice).HasColumnType("numeric(18,2)");
+            b.Property(i => i.ExpeditionCourier).HasMaxLength(50).IsRequired();
+            b.Property(i => i.ExpeditionCost).HasColumnType("numeric(18,2)");
+            b.HasIndex(i => i.ProductId);
+            b.Ignore(i => i.LineTotal);
         });
 
         AuditColumns.Configure(modelBuilder);

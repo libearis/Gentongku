@@ -13,12 +13,13 @@ public class AuthServiceTests
     private readonly Mock<IUserRepository> _users = new();
     private readonly Mock<IPasswordHasher> _passwordHasher = new();
     private readonly Mock<ITokenService> _tokenService = new();
+    private readonly Mock<IWalletService> _walletService = new();
     private readonly Mock<ISellerProfileProvisioner> _sellerProfileProvisioner = new();
     private readonly AuthService _sut;
 
     public AuthServiceTests()
     {
-        _sut = new AuthService(_users.Object, _passwordHasher.Object, _tokenService.Object, _sellerProfileProvisioner.Object);
+        _sut = new AuthService(_users.Object, _passwordHasher.Object, _tokenService.Object, _walletService.Object, _sellerProfileProvisioner.Object);
     }
 
     private static RegisterRequest ValidBuyerRequest(string username = "buyer1", string email = "buyer1@test.com") =>
@@ -107,6 +108,7 @@ public class AuthServiceTests
         Assert.Equal(UserRole.Buyer, result.Value.Role);
         _users.Verify(u => u.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()), Times.Once);
         _users.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _walletService.Verify(w => w.ProvisionAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Once);
         _sellerProfileProvisioner.Verify(s => s.ProvisionAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 

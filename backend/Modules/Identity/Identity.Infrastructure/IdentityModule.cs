@@ -23,6 +23,7 @@ public static class IdentityModule
         services.AddScoped<IUserQueries, UserQueries>();
         services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
         services.AddScoped<ITokenService, JwtTokenService>();
+        services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<IAuthService, AuthService>();
 
         return services;

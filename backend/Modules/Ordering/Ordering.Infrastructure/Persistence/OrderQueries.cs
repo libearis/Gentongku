@@ -11,6 +11,18 @@ public sealed class OrderQueries(OrderingDbContext db) : IOrderQueries
             .Where(o => o.BuyerId == buyerId)
             .OrderByDescending(o => o.CreatedAt)
             .Take(take)
-            .Select(o => new OrderDto(o.Id, o.BuyerId, o.TotalAmount, o.Status, o.Notes, o.CreatedAt))
+            .Select(ToDto())
             .ToListAsync(ct);
+
+    internal static System.Linq.Expressions.Expression<Func<Ordering.Domain.Entities.Order, OrderDto>> ToDto() => o =>
+        new OrderDto(
+            o.Id,
+            o.BuyerId,
+            o.SellerId,
+            o.CheckoutGroupId,
+            o.TotalAmount,
+            o.Status,
+            o.Notes,
+            o.CreatedAt,
+            o.Items.Select(i => new OrderItemDto(i.ProductId, i.ProductName, i.UnitPrice, i.Quantity, i.ExpeditionCourier, i.ExpeditionCost)).ToList());
 }

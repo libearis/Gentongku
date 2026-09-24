@@ -1,5 +1,7 @@
 using Catalog.Application.Abstractions;
+using Catalog.Application.DTOs;
 using Identity.Application.Abstractions;
+using Ordering.Application;
 using Ordering.Application.Abstractions;
 using Ordering.Domain.Entities;
 using Ordering.Domain.Enums;
@@ -15,20 +17,27 @@ public sealed class OrderingDummyDataGenerator(OrderingDbContext db, ICatalogQue
         var buyerIds = await userQueries.ListBuyerIdsAsync(500, ct);
         if (buyerIds.Count == 0) buyerIds = [Guid.NewGuid()];
 
+        var sellerGroups = products.GroupBy(p => p.SellerId).Select(g => g.ToList()).ToList();
+        if (sellerGroups.Count == 0) return 0;
+
+        var couriers = ExpeditionRates.All.Keys.ToList();
         var created = 0;
+
         for (var offset = 0; offset < count; offset += BatchSize)
         {
             var batch = Math.Min(BatchSize, count - offset);
             var rows = new List<Order>(batch);
             for (var i = 0; i < batch; i++)
             {
-                var pickedProducts = PickRandomProducts(products);
-                var total = pickedProducts.Count > 0 ? pickedProducts.Sum(p => p.Price) : _random.Next(20_000, 500_000);
-                var notes = pickedProducts.Count > 0
-                    ? $"Pesanan: {string.Join(", ", pickedProducts.Select(p => p.Name))}"
-                    : "Pesanan data uji (belum ada produk di katalog).";
+                var sellerProducts = Pick(sellerGroups);
+                var pickedProducts = PickRandomProducts(sellerProducts);
+                if (pickedProducts.Count == 0) continue;
 
-                var order = Order.Create(Pick(buyerIds), total, notes);
+                var items = pickedProducts
+                    .Select(p => new OrderItemSpec(p.Id, p.Name, p.Price, _random.Next(1, 4), Pick(couriers), ExpeditionRates.Resolve(Pick(couriers)) ?? 0m))
+                    .ToList();
+
+                var order = Order.Create(Pick(buyerIds), pickedProducts[0].SellerId, Guid.NewGuid(), items, "Pesanan data uji.");
                 order.AdvanceStatus(Pick(Statuses));
                 rows.Add(order);
             }
@@ -46,7 +55,7 @@ public sealed class OrderingDummyDataGenerator(OrderingDbContext db, ICatalogQue
 
     private readonly Random _random = new();
 
-    private List<Catalog.Application.DTOs.ProductDto> PickRandomProducts(IReadOnlyList<Catalog.Application.DTOs.ProductDto> products)
+    private List<ProductDto> PickRandomProducts(IReadOnlyList<ProductDto> products)
     {
         if (products.Count == 0) return [];
         var pickCount = Math.Min(products.Count, _random.Next(1, 4));

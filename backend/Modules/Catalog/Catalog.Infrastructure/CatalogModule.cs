@@ -22,6 +22,7 @@ public static class CatalogModule
         services.AddScoped<ISellerProfileService, SellerProfileService>();
         services.AddScoped<ISellerProfileProvisioner, SellerProfileProvisionerAdapter>();
         services.AddScoped<ICatalogDummyDataGenerator, CatalogDummyDataGenerator>();
+        services.AddScoped<ICatalogInventoryService, CatalogInventoryService>();
 
         return services;
     }

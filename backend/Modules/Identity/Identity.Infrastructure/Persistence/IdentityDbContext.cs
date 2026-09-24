@@ -11,6 +11,7 @@ public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : Db
     public const string Schema = "identity";
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<Wallet> Wallets => Set<Wallet>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,6 +30,14 @@ public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : Db
             b.Property(u => u.Role).HasConversion<string>().HasMaxLength(20).IsRequired();
             b.Property(u => u.IsActive).IsRequired();
             b.Property(u => u.CreatedAt).IsRequired();
+        });
+
+        modelBuilder.Entity<Wallet>(b =>
+        {
+            b.ToTable("wallets");
+            b.HasKey(w => w.Id);
+            b.HasIndex(w => w.UserId).IsUnique();
+            b.Property(w => w.Balance).HasColumnType("numeric(18,2)");
         });
 
         AuditColumns.Configure(modelBuilder);

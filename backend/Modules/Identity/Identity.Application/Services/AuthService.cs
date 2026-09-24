@@ -17,6 +17,7 @@ public sealed class AuthService(
     IUserRepository users,
     IPasswordHasher passwordHasher,
     ITokenService tokenService,
+    IWalletService walletService,
     ISellerProfileProvisioner? sellerProfileProvisioner = null) : IAuthService
 {
     public async Task<Result<AuthResponse>> RegisterAsync(RegisterRequest request, CancellationToken ct = default)
@@ -43,6 +44,8 @@ public sealed class AuthService(
 
         await users.AddAsync(user, ct);
         await users.SaveChangesAsync(ct);
+
+        await walletService.ProvisionAsync(user.Id, ct);
 
         if (request.Role == UserRole.Seller && sellerProfileProvisioner is not null)
         {
