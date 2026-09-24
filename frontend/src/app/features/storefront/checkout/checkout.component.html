@@ -2,9 +2,13 @@
   <h1>Checkout</h1>
 
   <div class="checkout__layout">
-    <div class="card checkout__wallet">
+    <div class="card checkout__wallet" [class.checkout__wallet--attention]="insufficientBalance()">
       <h2>Wallet</h2>
       <p class="checkout__note">Pembayaran menggunakan saldo wallet — belum ada gateway pembayaran asli.</p>
+
+      @if (insufficientBalance()) {
+        <p class="checkout__topup-prompt">Saldo tidak cukup untuk pesanan ini. Top up dulu, lalu bayar lagi.</p>
+      }
 
       <div class="wallet-balance">
         <span>Saldo saat ini</span>
@@ -18,7 +22,7 @@
           [value]="topUpAmount()"
           (input)="setTopUpAmount($any($event.target).value)"
         />
-        <button type="button" class="btn" (click)="topUp()">Top up</button>
+        <button type="button" class="btn" [class.btn--primary]="insufficientBalance()" (click)="topUp()">Top up</button>
       </div>
     </div>
 
@@ -35,7 +39,7 @@
         <span class="mono">{{ formatPrice(cart.subtotal()) }}</span>
       </div>
 
-      @if (error()) {
+      @if (error() && !insufficientBalance()) {
         <p class="checkout__error">{{ error() }}</p>
       }
 

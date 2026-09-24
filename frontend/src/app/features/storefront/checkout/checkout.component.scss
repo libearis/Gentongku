@@ -15,9 +15,23 @@
   padding: 20px;
 }
 
+.checkout__wallet--attention {
+  border: 2px solid var(--color-terracotta);
+}
+
 .checkout__note {
   color: var(--text-muted);
   font-size: 0.85rem;
+}
+
+.checkout__topup-prompt {
+  background: #fbeee6;
+  color: var(--color-terracotta);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 10px 0 0;
 }
 
 .wallet-balance {

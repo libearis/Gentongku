@@ -20,6 +20,7 @@ export class CheckoutComponent {
   readonly placing = signal(false);
   readonly topUpAmount = signal(100_000);
   readonly error = signal<string | null>(null);
+  readonly insufficientBalance = signal(false);
 
   constructor() {
     this.refreshBalance();
@@ -36,13 +37,18 @@ export class CheckoutComponent {
 
   topUp(): void {
     if (this.topUpAmount() <= 0) return;
-    this.walletService.topUp(this.topUpAmount()).subscribe((balance) => this.walletBalance.set(balance));
+    this.walletService.topUp(this.topUpAmount()).subscribe((balance) => {
+      this.walletBalance.set(balance);
+      this.insufficientBalance.set(false);
+      this.error.set(null);
+    });
   }
 
   placeOrder(): void {
     if (this.cart.lines().length === 0) return;
     this.placing.set(true);
     this.error.set(null);
+    this.insufficientBalance.set(false);
 
     const items = this.cart.lines().map((l) => ({
       productId: l.product.id,
@@ -58,8 +64,15 @@ export class CheckoutComponent {
       },
       error: (err) => {
         this.placing.set(false);
-        this.error.set(err.error?.error ?? 'Checkout gagal. Coba lagi.');
+        const message: string = err.error?.error ?? 'Checkout gagal. Coba lagi.';
+        this.error.set(message);
         this.refreshBalance();
+
+        if (message.includes('Saldo wallet tidak cukup')) {
+          this.insufficientBalance.set(true);
+          const shortfall = this.cart.subtotal() - (this.walletBalance() ?? 0);
+          this.topUpAmount.set(Math.max(10_000, Math.ceil(shortfall / 1000) * 1000));
+        }
       },
     });
   }
