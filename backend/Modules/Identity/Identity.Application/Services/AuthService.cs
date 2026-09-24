@@ -13,25 +13,12 @@ public interface IAuthService
 }
 
 // No self-registration for Admin: RegisterAsync rejects UserRole.Admin outright; Admin accounts come only from IdentitySeeder.
-public sealed class AuthService : IAuthService
+public sealed class AuthService(
+    IUserRepository users,
+    IPasswordHasher passwordHasher,
+    ITokenService tokenService,
+    ISellerProfileProvisioner? sellerProfileProvisioner = null) : IAuthService
 {
-    private readonly IUserRepository _users;
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly ITokenService _tokenService;
-    private readonly ISellerProfileProvisioner? _sellerProfileProvisioner;
-
-    public AuthService(
-        IUserRepository users,
-        IPasswordHasher passwordHasher,
-        ITokenService tokenService,
-        ISellerProfileProvisioner? sellerProfileProvisioner = null)
-    {
-        _users = users;
-        _passwordHasher = passwordHasher;
-        _tokenService = tokenService;
-        _sellerProfileProvisioner = sellerProfileProvisioner;
-    }
-
     public async Task<Result<AuthResponse>> RegisterAsync(RegisterRequest request, CancellationToken ct = default)
     {
         if (request.Role == UserRole.Admin)
@@ -43,26 +30,26 @@ public sealed class AuthService : IAuthService
         if (request.Role == UserRole.Seller && string.IsNullOrWhiteSpace(request.StoreName))
             return Result<AuthResponse>.Failure("Store name is required for Seller registration.");
 
-        var existingEmail = await _users.GetByEmailAsync(request.Email, ct);
+        var existingEmail = await users.GetByEmailAsync(request.Email, ct);
         if (existingEmail is not null)
             return Result<AuthResponse>.Failure("Email is already registered.");
 
-        var existingUsername = await _users.GetByUsernameAsync(request.Username, ct);
+        var existingUsername = await users.GetByUsernameAsync(request.Username, ct);
         if (existingUsername is not null)
             return Result<AuthResponse>.Failure("Username is already taken.");
 
-        var hash = _passwordHasher.Hash(request.Password);
+        var hash = passwordHasher.Hash(request.Password);
         var user = User.Create(request.Username, request.Email, hash, request.DisplayName, request.Role);
 
-        await _users.AddAsync(user, ct);
-        await _users.SaveChangesAsync(ct);
+        await users.AddAsync(user, ct);
+        await users.SaveChangesAsync(ct);
 
-        if (request.Role == UserRole.Seller && _sellerProfileProvisioner is not null)
+        if (request.Role == UserRole.Seller && sellerProfileProvisioner is not null)
         {
-            await _sellerProfileProvisioner.ProvisionAsync(user.Id, request.StoreName!, ct);
+            await sellerProfileProvisioner.ProvisionAsync(user.Id, request.StoreName!, ct);
         }
 
-        var (token, expiresAt) = _tokenService.IssueToken(user);
+        var (token, expiresAt) = tokenService.IssueToken(user);
         return Result<AuthResponse>.Success(new AuthResponse(user.Id, user.Username, user.Email, user.DisplayName, user.Role, token, expiresAt));
     }
 
@@ -71,14 +58,14 @@ public sealed class AuthService : IAuthService
         if (string.IsNullOrWhiteSpace(request.Identifier) || string.IsNullOrWhiteSpace(request.Password))
             return Result<AuthResponse>.Failure("Invalid email/username or password.");
 
-        var user = await _users.GetByEmailOrUsernameAsync(request.Identifier, ct);
+        var user = await users.GetByEmailOrUsernameAsync(request.Identifier, ct);
         if (user is null || !user.IsActive)
             return Result<AuthResponse>.Failure("Invalid email/username or password.");
 
-        if (!_passwordHasher.Verify(request.Password, user.PasswordHash))
+        if (!passwordHasher.Verify(request.Password, user.PasswordHash))
             return Result<AuthResponse>.Failure("Invalid email/username or password.");
 
-        var (token, expiresAt) = _tokenService.IssueToken(user);
+        var (token, expiresAt) = tokenService.IssueToken(user);
         return Result<AuthResponse>.Success(new AuthResponse(user.Id, user.Username, user.Email, user.DisplayName, user.Role, token, expiresAt));
     }
 }

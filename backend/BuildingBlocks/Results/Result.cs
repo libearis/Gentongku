@@ -3,16 +3,16 @@ namespace BuildingBlocks.Results;
 // Application-layer handlers return this (or Result<T>) instead of throwing for expected failure paths.
 public class Result
 {
-    public bool IsSuccess { get; }
-    public string? Error { get; }
-    public IReadOnlyList<string> Errors { get; }
-
     protected Result(bool isSuccess, IReadOnlyList<string> errors)
     {
         IsSuccess = isSuccess;
         Errors = errors;
         Error = errors.Count > 0 ? errors[0] : null;
     }
+
+    public bool IsSuccess { get; }
+    public string? Error { get; }
+    public IReadOnlyList<string> Errors { get; }
 
     public static Result Success() => new(true, Array.Empty<string>());
 
@@ -25,13 +25,13 @@ public class Result
 
 public sealed class Result<T> : Result
 {
-    public T? Value { get; }
-
     private Result(bool isSuccess, T? value, IReadOnlyList<string> errors)
         : base(isSuccess, errors)
     {
         Value = value;
     }
+
+    public T? Value { get; }
 
     public static Result<T> Success(T value) => new(true, value, Array.Empty<string>());
 

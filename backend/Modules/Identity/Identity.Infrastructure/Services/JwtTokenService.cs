@@ -18,8 +18,6 @@ public sealed class JwtOptions
 
 public sealed class JwtTokenService : ITokenService
 {
-    private readonly JwtOptions _options;
-
     public JwtTokenService(IConfiguration configuration)
     {
         _options = new JwtOptions();
@@ -56,4 +54,6 @@ public sealed class JwtTokenService : ITokenService
 
         return (new JwtSecurityTokenHandler().WriteToken(token), expires);
     }
+
+    private readonly JwtOptions _options;
 }

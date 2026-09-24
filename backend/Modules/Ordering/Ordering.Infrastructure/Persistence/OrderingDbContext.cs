@@ -4,11 +4,9 @@ using Ordering.Domain.Entities;
 
 namespace Ordering.Infrastructure.Persistence;
 
-public class OrderingDbContext : DbContext
+public class OrderingDbContext(DbContextOptions<OrderingDbContext> options) : DbContext(options)
 {
     public const string Schema = "ordering";
-
-    public OrderingDbContext(DbContextOptions<OrderingDbContext> options) : base(options) { }
 
     public DbSet<Order> Orders => Set<Order>();
 

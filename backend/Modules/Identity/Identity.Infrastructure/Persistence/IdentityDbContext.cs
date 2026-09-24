@@ -6,11 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Identity.Infrastructure.Persistence;
 
 // One schema per module, no cross-schema FKs.
-public class IdentityDbContext : DbContext
+public class IdentityDbContext(DbContextOptions<IdentityDbContext> options) : DbContext(options)
 {
     public const string Schema = "identity";
-
-    public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options) { }
 
     public DbSet<User> Users => Set<User>();
 

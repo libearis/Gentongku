@@ -7,17 +7,13 @@ namespace Gentongku.Api.Controllers;
 // TODO: real strategy execution — see Benchmark.Infrastructure/Services/BenchmarkService.cs.
 [ApiController]
 [Route("api/benchmark")]
-public class BenchmarkController : ControllerBase
+public class BenchmarkController(IBenchmarkService benchmarkService) : ControllerBase
 {
-    private readonly IBenchmarkService _benchmarkService;
-
-    public BenchmarkController(IBenchmarkService benchmarkService) => _benchmarkService = benchmarkService;
-
     [HttpPost("read")]
     public async Task<IActionResult> RunRead(ReadBenchmarkRequest request, CancellationToken ct) =>
-        Ok(await _benchmarkService.RunReadBenchmarkAsync(request, ct));
+        Ok(await benchmarkService.RunReadBenchmarkAsync(request, ct));
 
     [HttpPost("write")]
     public async Task<IActionResult> RunWrite(WriteBenchmarkRequest request, CancellationToken ct) =>
-        Ok(await _benchmarkService.RunWriteBenchmarkAsync(request, ct));
+        Ok(await benchmarkService.RunWriteBenchmarkAsync(request, ct));
 }

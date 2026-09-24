@@ -7,27 +7,12 @@ using Ordering.Domain.Enums;
 namespace Ordering.Infrastructure.Persistence;
 
 // Reads Products/Buyers only through their Application-layer contracts (AGENTS.md 3), falling back to a synthetic buyer id so the run is never a no-op.
-public sealed class OrderingDummyDataGenerator : IOrderingDummyDataGenerator
+public sealed class OrderingDummyDataGenerator(OrderingDbContext db, ICatalogQueries catalogQueries, IUserQueries userQueries) : IOrderingDummyDataGenerator
 {
-    private const int BatchSize = 500;
-    private static readonly OrderStatus[] Statuses = [OrderStatus.Pending, OrderStatus.Paid, OrderStatus.Shipped, OrderStatus.Completed];
-
-    private readonly OrderingDbContext _db;
-    private readonly ICatalogQueries _catalogQueries;
-    private readonly IUserQueries _userQueries;
-    private readonly Random _random = new();
-
-    public OrderingDummyDataGenerator(OrderingDbContext db, ICatalogQueries catalogQueries, IUserQueries userQueries)
-    {
-        _db = db;
-        _catalogQueries = catalogQueries;
-        _userQueries = userQueries;
-    }
-
     public async Task<int> GenerateOrdersAsync(int count, CancellationToken ct = default)
     {
-        var products = await _catalogQueries.ListProductsAsync(500, ct);
-        var buyerIds = await _userQueries.ListBuyerIdsAsync(500, ct);
+        var products = await catalogQueries.ListProductsAsync(500, ct);
+        var buyerIds = await userQueries.ListBuyerIdsAsync(500, ct);
         if (buyerIds.Count == 0) buyerIds = [Guid.NewGuid()];
 
         var created = 0;
@@ -48,13 +33,18 @@ public sealed class OrderingDummyDataGenerator : IOrderingDummyDataGenerator
                 rows.Add(order);
             }
 
-            _db.Orders.AddRange(rows);
-            await _db.SaveChangesAsync(ct);
+            db.Orders.AddRange(rows);
+            await db.SaveChangesAsync(ct);
             created += rows.Count;
         }
 
         return created;
     }
+
+    private const int BatchSize = 500;
+    private static readonly OrderStatus[] Statuses = [OrderStatus.Pending, OrderStatus.Paid, OrderStatus.Shipped, OrderStatus.Completed];
+
+    private readonly Random _random = new();
 
     private List<Catalog.Application.DTOs.ProductDto> PickRandomProducts(IReadOnlyList<Catalog.Application.DTOs.ProductDto> products)
     {

@@ -13,8 +13,6 @@ public class User : BaseEntity
     public UserRole Role { get; private set; }
     public bool IsActive { get; private set; } = true;
 
-    private User() { }
-
     public static User Create(string username, string email, string passwordHash, string displayName, UserRole role)
     {
         if (string.IsNullOrWhiteSpace(username)) throw new ArgumentException("Username is required.", nameof(username));
@@ -37,4 +35,6 @@ public class User : BaseEntity
         IsActive = false;
         Touch();
     }
+
+    private User() { }
 }

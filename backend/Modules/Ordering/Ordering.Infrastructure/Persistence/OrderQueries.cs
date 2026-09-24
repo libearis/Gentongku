@@ -4,14 +4,10 @@ using Ordering.Application.DTOs;
 
 namespace Ordering.Infrastructure.Persistence;
 
-public sealed class OrderQueries : IOrderQueries
+public sealed class OrderQueries(OrderingDbContext db) : IOrderQueries
 {
-    private readonly OrderingDbContext _db;
-
-    public OrderQueries(OrderingDbContext db) => _db = db;
-
     public async Task<IReadOnlyList<OrderDto>> ListRecentAsync(Guid buyerId, int take = 20, CancellationToken ct = default) =>
-        await _db.Orders.AsNoTracking()
+        await db.Orders.AsNoTracking()
             .Where(o => o.BuyerId == buyerId)
             .OrderByDescending(o => o.CreatedAt)
             .Take(take)

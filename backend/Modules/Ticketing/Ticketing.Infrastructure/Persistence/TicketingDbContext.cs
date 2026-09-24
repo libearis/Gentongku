@@ -3,11 +3,9 @@ using Ticketing.Infrastructure.Entities;
 
 namespace Ticketing.Infrastructure.Persistence;
 
-public class TicketingDbContext : DbContext
+public class TicketingDbContext(DbContextOptions<TicketingDbContext> options) : DbContext(options)
 {
     public const string Schema = "ticketing";
-
-    public TicketingDbContext(DbContextOptions<TicketingDbContext> options) : base(options) { }
 
     public DbSet<IssueReport> IssueReports => Set<IssueReport>();
 

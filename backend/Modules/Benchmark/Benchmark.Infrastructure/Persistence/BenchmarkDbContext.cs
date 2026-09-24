@@ -4,11 +4,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Benchmark.Infrastructure.Persistence;
 
 // Only owns the two write-benchmark tables; read benchmarks query Catalog/Ordering directly instead of duplicating their schemas.
-public class BenchmarkDbContext : DbContext
+public class BenchmarkDbContext(DbContextOptions<BenchmarkDbContext> options) : DbContext(options)
 {
     public const string Schema = "benchmark";
-
-    public BenchmarkDbContext(DbContextOptions<BenchmarkDbContext> options) : base(options) { }
 
     public DbSet<OrderIndexedRow> OrdersIndexed => Set<OrderIndexedRow>();
     public DbSet<OrderPlainRow> OrdersPlain => Set<OrderPlainRow>();

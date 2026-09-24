@@ -3,11 +3,9 @@ using Scheduler.Infrastructure.Entities;
 
 namespace Scheduler.Infrastructure.Persistence;
 
-public class SchedulerDbContext : DbContext
+public class SchedulerDbContext(DbContextOptions<SchedulerDbContext> options) : DbContext(options)
 {
     public const string Schema = "scheduler";
-
-    public SchedulerDbContext(DbContextOptions<SchedulerDbContext> options) : base(options) { }
 
     public DbSet<JobRun> JobRuns => Set<JobRun>();
 
