@@ -9,10 +9,10 @@ public sealed class BenchmarkService : IBenchmarkService
     {
         var results = new List<StrategyResult>
         {
-            new("RedisOnly", false, 0, 0, "Not implemented yet — see AGENTS.md section 6.1"),
-            new("DbIndexOnly", false, 0, 0, "Not implemented yet — see AGENTS.md section 6.1"),
-            new("LiveQuery", false, 0, 0, "Not implemented yet — see AGENTS.md section 6.1"),
-            new("IndexPlusRedis", false, 0, 0, "Not implemented yet — see AGENTS.md section 6.1"),
+            new("RedisOnly", false, 0, 0, "Not implemented yet"),
+            new("DbIndexOnly", false, 0, 0, "Not implemented yet"),
+            new("LiveQuery", false, 0, 0, "Not implemented yet"),
+            new("IndexPlusRedis", false, 0, 0, "Not implemented yet"),
         };
 
         return Task.FromResult(new ReadBenchmarkResult(request.Table, request.Column, results));

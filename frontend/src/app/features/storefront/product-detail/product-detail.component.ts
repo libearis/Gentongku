@@ -20,7 +20,7 @@ export class ProductDetailComponent {
   private readonly cartStore = inject(CartStore);
   private readonly auth = inject(AuthStore);
 
-  /** Admin has read-only storefront access per AGENTS.md section 4 — no cart affordance for that role. */
+  // Admin has read-only storefront access — no cart affordance for that role.
   readonly canPurchase = computed(() => this.auth.role() === 'Buyer' || this.auth.role() === 'Seller');
 
   readonly product = toSignal(

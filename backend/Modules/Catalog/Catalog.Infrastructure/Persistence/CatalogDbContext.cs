@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Persistence;
 
-// Product indexes match the columns queryable from the Benchmark module's column picker (AGENTS.md section 6.1).
+// Product indexes match the columns queryable from the Benchmark module's column picker.
 public class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbContext(options)
 {
     public const string Schema = "catalog";

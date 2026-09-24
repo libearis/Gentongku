@@ -5,7 +5,7 @@ import { DummyDataTable, SchedulerService } from '../data/scheduler.service';
 
 type Mode = 'rows' | 'size';
 
-// Documented estimate constant per AGENTS.md section 7 — average row size, not byte-precise.
+// Documented estimate constant — average row size, not byte-precise.
 const AVG_ROW_BYTES = 420;
 
 interface TableOption {
@@ -73,7 +73,7 @@ export class GenerateDataComponent {
     this.targetMb.set(Number.isFinite(n) && n > 0 ? n : 0);
   }
 
-  // Fire-and-forget: success means the job was enqueued, not that it finished — track its lifecycle in Job Monitor (AGENTS.md 7).
+  // Fire-and-forget: success means the job was enqueued, not that it finished — track its lifecycle in Job Monitor.
   enqueue(): void {
     this.submitting.set(true);
     this.error.set(null);

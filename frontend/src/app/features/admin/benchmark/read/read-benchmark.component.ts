@@ -74,7 +74,7 @@ export class ReadBenchmarkComponent {
     return this.columns().find((c) => c.name === this.selectedColumn())?.indexed ?? false;
   }
 
-  // Simulation only: models the real degradation rule where a non-indexed column drops index-only/index+redis to live-query/redis-only (AGENTS.md 6.1).
+  // Simulation only: models the real degradation rule where a non-indexed column drops index-only/index+redis to live-query/redis-only.
   runBenchmark(): void {
     this.running.set(true);
     const indexed = this.isColumnIndexed();

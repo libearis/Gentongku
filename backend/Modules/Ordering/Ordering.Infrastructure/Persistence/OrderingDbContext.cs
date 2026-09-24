@@ -20,7 +20,7 @@ public class OrderingDbContext(DbContextOptions<OrderingDbContext> options) : Db
             b.HasKey(o => o.Id);
             b.Property(o => o.Status).HasConversion<string>().HasMaxLength(20);
             b.Property(o => o.TotalAmount).HasColumnType("numeric(18,2)");
-            b.Property(o => o.Notes).HasColumnType("text"); // intentionally unindexed, see AGENTS.md 6.1
+            b.Property(o => o.Notes).HasColumnType("text"); // intentionally unindexed
             b.HasIndex(o => o.Status);
             b.HasIndex(o => o.CreatedAt);
             b.HasIndex(o => o.BuyerId);

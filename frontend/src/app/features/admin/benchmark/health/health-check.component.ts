@@ -12,7 +12,7 @@ interface HealthItem {
   styleUrl: './health-check.component.scss',
 })
 export class HealthCheckComponent {
-  // Placeholder — real data comes from ASP.NET Core health checks at /health (AGENTS.md section 6.4).
+  // Placeholder — real data comes from ASP.NET Core health checks at /health.
   readonly items = signal<HealthItem[]>([
     { name: 'PostgreSQL', status: 'Healthy' },
     { name: 'Redis', status: 'Healthy' },

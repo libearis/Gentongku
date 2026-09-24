@@ -3,7 +3,7 @@ using Ordering.Domain.Enums;
 
 namespace Ordering.Domain.Entities;
 
-// Notes is intentionally left unindexed to demonstrate the "no index -> degrades to live query" behavior (AGENTS.md 6.1).
+// Notes is intentionally left unindexed to demonstrate the "no index -> degrades to live query" behavior.
 public class Order : BaseEntity
 {
     public Guid BuyerId { get; private set; }

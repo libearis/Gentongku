@@ -6,7 +6,7 @@ using Ordering.Domain.Enums;
 
 namespace Ordering.Infrastructure.Persistence;
 
-// Reads Products/Buyers only through their Application-layer contracts (AGENTS.md 3), falling back to a synthetic buyer id so the run is never a no-op.
+// Reads Products/Buyers only through their Application-layer contracts, falling back to a synthetic buyer id so the run is never a no-op.
 public sealed class OrderingDummyDataGenerator(OrderingDbContext db, ICatalogQueries catalogQueries, IUserQueries userQueries) : IOrderingDummyDataGenerator
 {
     public async Task<int> GenerateOrdersAsync(int count, CancellationToken ct = default)

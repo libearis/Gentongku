@@ -30,5 +30,10 @@
     <Project Path="Modules/Ticketing/Ticketing.Application/Ticketing.Application.csproj" />
     <Project Path="Modules/Ticketing/Ticketing.Infrastructure/Ticketing.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Identity.Tests/Identity.Tests.csproj" />
+    <Project Path="Tests/Catalog.Tests/Catalog.Tests.csproj" />
+    <Project Path="Tests/Ordering.Tests/Ordering.Tests.csproj" />
+  </Folder>
   <Project Path="BuildingBlocks/BuildingBlocks.csproj" />
 </Solution>

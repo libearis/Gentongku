@@ -2,7 +2,6 @@ using Catalog.Application.DTOs;
 
 namespace Catalog.Application.Abstractions;
 
-// Exposed to other modules' Application layers via DI so they never reference Catalog directly (AGENTS.md section 3).
 public interface ICatalogQueries
 {
     Task<IReadOnlyList<CategoryDto>> ListCategoriesAsync(CancellationToken ct = default);

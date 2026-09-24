@@ -1,5 +1,3 @@
-/* Gentongku global styles & design tokens (AGENTS.md section 11). */
-
 :root {
   /* Brand */
   --color-terracotta: #c1502e;
@@ -26,7 +24,7 @@
   --shadow-soft: 0 2px 12px rgba(44, 36, 32, 0.08);
 }
 
-/* Dark/technical register — Admin, Benchmark, Scheduler (AGENTS.md 11) */
+/* Dark/technical register — Admin, Benchmark, Scheduler */
 .theme-dark {
   --bg: #16181d;
   --surface: #1f2229;

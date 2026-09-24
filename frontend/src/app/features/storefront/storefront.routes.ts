@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { buyerFlowGuard } from '../../core/auth/auth.guard';
 
-// Shared by the Buyer route tree and the Seller "Shopping" tab — no duplicate storefront implementation (AGENTS.md section 4/5).
+// Shared by the Buyer route tree and the Seller "Shopping" tab — no duplicate storefront implementation.
 export const STOREFRONT_ROUTES: Routes = [
   {
     path: 'home',

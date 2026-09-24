@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-// Search (Elasticsearch) isn't routed here — it's phase 2, shown as a disabled sidebar entry instead (AGENTS.md 6.3).
+// Search (Elasticsearch) isn't routed here — it's phase 2, shown as a disabled sidebar entry instead.
 export const BENCHMARK_ROUTES: Routes = [
   {
     path: 'read',

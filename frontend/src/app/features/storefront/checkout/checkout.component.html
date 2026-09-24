@@ -4,7 +4,7 @@
   <div class="checkout__layout">
     <div class="card checkout__payment">
       <h2>Payment method</h2>
-      <p class="checkout__note">Mocked payment methods only — no real gateway is wired up (AGENTS.md section 13).</p>
+      <p class="checkout__note">Mocked payment methods only — no real gateway is wired up.</p>
 
       <label class="payment-option" [class.payment-option--active]="paymentMethod() === 'transfer'">
         <input type="radio" name="payment" [checked]="paymentMethod() === 'transfer'" (change)="selectPayment('transfer')" />
